@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+
 //dans la liste chainée des positions
 #define NOPLAYER -1
 #define PLAYER1 0
@@ -14,14 +15,20 @@
 #define RUN_DEBUG 1
 #define FULL_DEBUG 2
 
-//params generaux du jeux
-//#define FREE 0
+//mot clé pour l'aide
+#define HINT_KEYWORD "hint"
+
 //taille du damier
 #define DIM 15
+
 //profondeur de rechercher
 #define MAXDEPTH 2
+
 //expansion a chaque fois
 #define EXTRA 1
+
+//nbre de paires (==pions/2) à prendre
+#define NBPAIRES 5
 
 //max ou min de deux valeurs
 #define MAX(x,y) ((x)>(y)?(x):(y))
@@ -33,4 +40,4 @@
 #define PERSONNE '0'
 
 #include "structs.h"
-#include "headers.h"
+#include "prototypes.h"

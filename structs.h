@@ -6,11 +6,6 @@ typedef struct s_coup
   struct s_coup	*next;
 } t_coup;
 
-//typedef struct s_tab
-//{
-//  t_coup	t[DIM][DIM];
-//} t_tab;
-
 typedef struct s_noeud
 {
   signed char	 player; // joueur jouant a ce tour la
@@ -20,6 +15,7 @@ typedef struct s_noeud
   int			 x;		//coordonee x coup joue
   int			 y;		//coordonee x coup joue
   int			 deep;	//profondeur du noeud, 0=> tout en bas
+  int			 paires[1]; //nbre de paires perdues par les joueurs
 } t_noeud;
 
 typedef struct s_dimensions	//structure pour enregistrer
@@ -41,9 +37,3 @@ typedef struct s_args		//contient l'analyse des args
   int	players;		// 1 ou 2 joueurs
   int	debug;			//lancement en mode debug
 } t_args;
-
-typedef struct s_score
-{
-	int ownalign;
-	int advalign;
-} t_score;

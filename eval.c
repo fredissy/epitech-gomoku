@@ -122,6 +122,8 @@ int gameended(t_noeud *gamestate)
 		  return (1);
 		coup = coup->next;
 	}
+	if(gamestate->paires[0] == NBPAIRES || gamestate->paires[1] == NBPAIRES)
+		return (1);
 	return(nbalign==5);
 }
 

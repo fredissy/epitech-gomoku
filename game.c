@@ -19,6 +19,8 @@ void		gameloop_1p(t_args args)
   jeu = malloc(sizeof(t_noeud));
   jeu->coup=0;
   jeu->player = PLAYER1;
+  jeu->paires[0] = 0;
+  jeu->paires[1] = 0;
   while(!gagne)
     {
       toplay=saisie(PLAYER1, jeu->coup);
@@ -29,8 +31,9 @@ void		gameloop_1p(t_args args)
 	    printf("ordi joue sur:(%d;%d)\n",toplay.x, toplay.y);
       ajoutecoup(jeu, toplay, PLAYER2);
       dealprises(jeu, toplay, PLAYER2);
-      if(args.debug==RUN_DEBUG||args.debug==FULL_DEBUG)
+      if(args.debug==FULL_DEBUG)
 	    displaymoves(jeu->coup);
+	  infoprises(jeu);
 	  showgrid(jeu);
 	  gagne=gameended(jeu);
     }
@@ -44,19 +47,28 @@ void	gameloop_2p(t_args args)
   jeu = malloc(sizeof(t_noeud));
   jeu->coup=0;
   jeu->player = PLAYER1;
+  jeu->paires[0] = 0;
+  jeu->paires[1] = 0;
+  ajoutecoup(jeu, generatecoord(-1, -1), DEHORS);
   while(!gagne)
     {
       toplay=saisie(PLAYER1, jeu->coup);
       ajoutecoup(jeu, toplay, PLAYER1);
       dealprises(jeu, toplay, PLAYER1);
+      infoprises(jeu);
       showgrid(jeu);
+      gagne = gameended(jeu);
+      if(args.debug==FULL_DEBUG)
+	    displaymoves(jeu->coup);
       toplay = saisie(PLAYER2, jeu->coup);
       ajoutecoup(jeu, toplay, PLAYER2);
       dealprises(jeu, toplay, PLAYER2);
-	  gagne = gameended(jeu);
+	  infoprises(jeu);
 	  showgrid(jeu);
-	  //displaymoves(jeu->coup);
-    }
+	  gagne = gameended(jeu);
+      if(args.debug==FULL_DEBUG)
+	    displaymoves(jeu->coup);
+	}
     printf("fini!\n");
 }
 

@@ -126,6 +126,7 @@ void	ajoutecoup(t_noeud *parent, t_coord coord, int player)
     cur->next=newcoup;
   else
     parent->coup=newcoup;
+
 }
 
 t_coup *copycoup(t_coup *src)
@@ -142,28 +143,24 @@ void removecoup(t_noeud *parent, t_coord coord)
 {
 	t_coup *prev;
 	t_coup *cur;
-	t_coup *tmp;
+	displaymoves(parent->coup);
 
 	prev=parent->coup;
-	if(prev->x==coord.x && prev->y==coord.y)
-	{
-		tmp = prev;
-		parent->coup = prev->next;
-		free(tmp);
-		return;
-	}
 	cur = prev->next;
 	while(cur)
 	{
 		if(cur->x==coord.x && cur->y==coord.y)
 		{
-			tmp = cur;
 			prev->next = cur->next;
-			free(tmp);
-			return;
+			free(cur);
+			cur=prev;
+			displaymoves(parent->coup);
+//			return;
 		}
+		cur=cur->next;
+		prev = prev->next;
 	}
-	printf("coup non trouve dans la liste!\n");
+	//exit(1);
 }
 
 

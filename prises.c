@@ -21,12 +21,6 @@ int	prise_paire_adversaire(t_coup *coups, t_coord coord, char player)
 	i=0;
 	while(i<8)
 		free(tabs[i++]);
-	//if(nbre)
-  //  {
-	//  printf("prise paire adverse!")
-	//  return(1);
-  //  }
-	//return (0);
 	return(nbre);
 }
 
@@ -41,7 +35,8 @@ int do_prend_paire(char *chaine)
 
 
 /************************************************************/
-
+//s'occupe des prises sur le plateau. en vire si certaines sont détectées
+// en fonction de la position jouée (coord)
 
 // x: adv
 // ?: coup a jouer
@@ -54,7 +49,6 @@ void	dealprises(t_noeud *jeu, t_coord coord, char player)
 {
 	char	*tabs[8];
 	int		i=0;
-
 	tabs[0] = buildchaine(jeu->coup, 1, 0, coord, player, 5, 0); //droite
 	tabs[1] = buildchaine(jeu->coup, 1, 1, coord, player, 5, 0); //bas droite
 	tabs[2] = buildchaine(jeu->coup, 0, 1, coord, player, 5, 0); //bas
@@ -64,7 +58,6 @@ void	dealprises(t_noeud *jeu, t_coord coord, char player)
 	tabs[6] = buildchaine(jeu->coup, 0, -1, coord, player, 5, 0); //haut
 	tabs[7] = buildchaine(jeu->coup, 1, -1, coord, player, 5, 0); //haut droite
 	tabs[8] = 0;
-
 	while(i<8)
 	{
 	  if(do_prend_paire(tabs[i]))
@@ -75,7 +68,14 @@ void	dealprises(t_noeud *jeu, t_coord coord, char player)
 	while(i<8)
 	  free(tabs[i++]);
 }
-
+/* Sens:
+**
+**  5 6 7
+**   \|/
+**  4-+-0
+**   /|\
+**  3 2 1
+*/
 void enlevepaire(t_noeud *jeu, t_coord coord, int sens, char player)
 {
 	int x = 0;
@@ -90,5 +90,6 @@ void enlevepaire(t_noeud *jeu, t_coord coord, int sens, char player)
 		y=-1;
 	removecoup(jeu, generatecoord(coord.x+x, coord.y+y));
 	removecoup(jeu, generatecoord(coord.x+2*x, coord.y+2*y));
-	printf("Paire perdue pour le joueur %d!\n", (!player)+1);
+	printf("Deux pions perdus pour le joueur %d!\n", (!player)+1);
+	jeu->paires[!player]++;
 }

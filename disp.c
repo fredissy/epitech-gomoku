@@ -28,7 +28,7 @@ void showgrid(t_noeud *gamestate)
 	t_dimensions dim;
 
 	dim = getdimensions(gamestate);
-	printf("   ");
+	printf("  |");
 	while(x<dim.maxleft+dim.width)
 	{
 		if(x<10)
@@ -64,4 +64,9 @@ void showgrid(t_noeud *gamestate)
 	  printf("\n");
 	  y++;
 	}
+}
+
+void infoprises(t_noeud *jeu)
+{
+	printf("1>%d,2>%d\n", jeu->paires[0], jeu->paires[1]);
 }

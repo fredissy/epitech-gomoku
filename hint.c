@@ -9,11 +9,11 @@ void showhint(t_coup *coups, signed char player)
 
 	noeud.x = coups->x;
 	noeud.y = coups->y;
-	noeud.player = player;
+	noeud.player = !player;
 
 	noeud.coup = duplicate(coups);
-	hint = MinMax(&noeud, MAXDEPTH, player, args);
-	printf("%d %d\n", hint.x, hint.y);
+	hint = MinMax(&noeud, MAXDEPTH, !player, args);
+	printf("(%d;%d)\n", hint.x, hint.y);
 	delcoups(noeud.coup);
 }
 
