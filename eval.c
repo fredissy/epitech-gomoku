@@ -14,7 +14,7 @@ int evalnode(t_noeud *gamestate, char player, t_args args)
 	  coord.y=coup->y;
 	  if(coup->player ==player)
 	  {
-	      printf("(%d;%d)", coord.x, coord.y);
+	      printf(" (%d;%d)", coord.x, coord.y);
 		  score+=2*evalcase_align(gamestate->coup, coord, player); //on aligne des pions, 2 points par pion aligné
 		  score+=10*(fills_hole(gamestate->coup, coord, player)); //on remplit un xOxx adverse, 10x par remplissage
 		  score+=30*(blocks_ennemy(gamestate->coup, coord, player));//on bloque une evolution vers un XXXX adverse, 10 points par blocage
@@ -24,10 +24,12 @@ int evalnode(t_noeud *gamestate, char player, t_args args)
 		  else
 		    score-=30*(prise_paire_adversaire(gamestate->coup, coord, !player));//on se fait manger une paire, pas intéressant donc -15 points
 		  //score-=100*(get_maxalign_coord(coord, gamestate, !player) == 5);//l'adversaire aligne 5 pions => -80 pour cette position
+		  printf("=%d ", score);
 	  }
 	  coup = coup->next;
   }
   score+=100*(get_maxalign_coord(coord, gamestate, player) == 5);//on réussit à aligner 5 pions => victoire, +100 points
+
   gamestate->value=/*best*/score;
 //  printf(" %d %d => %d\n", coord.x, coord.y, score);
   return(score);
@@ -40,27 +42,103 @@ int	evalcase_align(t_coup *coups, t_coord coord, char player)
   if(occupee(coups, coord)== NOPLAYER)
     return (0);
   if(coord.x<=DIM-6 && coord.x>=0)
+  {printf("\na");
   	 score=MAX(score,eval_line(coups, coord, 1, 0, player));
+ }
   if(coord.y<=DIM-6 && coord.y>=0 && coord.x<=DIM-6 && coord.x>=0)
-  	score=MAX(score,eval_line(coups, coord, 1, 1, player));
-  if(coord.y<=DIM-6 && coord.y>=0)
-  	score=MAX(score,eval_line(coups, coord, 0, 1, player));
+ {printf("\nb");
+ score=MAX(score,eval_line(coups, coord, 1, 1, player));
+ }
+ if(coord.y<=DIM-6 && coord.y>=0)
+ {printf("\nc");
+	 score=MAX(score,eval_line(coups, coord, 0, 1, player));
+  }
   if(coord.y<=DIM-6 && coord.y>=0 && coord.x>=5 && coord.x<=DIM)
-	score=MAX(score,eval_line(coups, coord, -1, 1, player));
+	{printf("\nd");
+		score=MAX(score,eval_line(coups, coord, -1, 1, player));
+  }
   if(coord.x>=5 && coord.x<=DIM)
-    score=MAX(score,eval_line(coups, coord, -1, 0, player));
+  {printf("\ne");
+	  score=MAX(score,eval_line(coups, coord, -1, 0, player));
+  }
   if(coord.x>=5 && coord.x<=DIM && coord.y>=5 && coord.y<=DIM)
-    score=MAX(score,eval_line(coups, coord, -1, -1, player));
+  {printf("\nf");
+	  score=MAX(score,eval_line(coups, coord, -1, -1, player));
+  }
   if(coord.y>=5 && coord.y<=DIM)
-	score=MAX(score,eval_line(coups, coord, 0, -1, player));
-  if(coord.x<=DIM-6 && coord.x>=0 && coord.y>=5 && coord.y<=DIM)
-	score=MAX(score,eval_line(coups, coord, 1, -1, player));
-  printf("%d;",score);
+	{printf("\ng");
+		score=MAX(score,eval_line(coups, coord, 0, -1, player));
+  }
+  if(coord.x<=DIM-5 && coord.x>=0 && coord.y>=5 && coord.y<=DIM)
+	{printf("\nh");
+		score=MAX(score,eval_line(coups, coord, 1, -1, player));
+
+  }printf("=>%d;",score);
   return(score);
 }
 
+int	eval_line(t_coup *coups, t_coord coord, signed int xm, signed int ym, char player)
+{
+	char	player_2;
+	int		i=0;
+	int		x;
+	int		y;
+	int		space=0;
+
+	if(player==PLAYER1)
+	  player_2=PLAYER2;
+	else
+      player_2=PLAYER1;
+
+    x = coord.x;
+    y = coord.y;
+i=0;
+    while((occupee2(coups, generatecoord(x,y)) == player) && i<5 )
+    {
+		printf("!");
+		x+=xm;
+		y+=ym;
+		i++;
+	}
+	x+=xm;
+		y+=ym;
+
+	while(space+i<5 && (occupee2(coups, generatecoord(x,y)) == NOPLAYER))
+	{
+		printf("-");
+	    x+=xm;
+		y+=ym;
+		space++;
+	}
+    x = coord.x-xm;
+    y = coord.y-ym;
+	while(i<5 && (occupee2(coups, generatecoord(x,y))==player))
+	{
+		printf(":");
+		x-=xm;
+		y-=ym;
+		i++;
+	}
+	x+=xm;
+		y+=ym;
+
+	while(space+i<5 && (occupee2(coups, generatecoord(x,y)) == NOPLAYER))
+	{
+		printf("/");
+	    x+=xm;
+		y+=ym;
+		space++;
+	}
+printf("{%d|%d}", i, space);
+if(space+i>=5)
+return(i);
+else
+return(0);
+
+}
 // principe: on remplit un tableau de 6 chars avec les 6 cases a analyser,
 // on compte le score possible avec cette position, enfin on le renvoie.
+/*
 int	eval_line(t_coup *coups, t_coord coord, signed int xm, signed int ym, char player)
 {
   char	cells[9];
@@ -104,7 +182,7 @@ int	eval_line(t_coup *coups, t_coord coord, signed int xm, signed int ym, char p
       score++;
       i++;
     }
-  while(i<10 && cells[i]!=player_2)
+  while(i<10 && (cells[i]!=player_2 && cells[i]!=DEHORS))
     {
 		nbfree++;
 		i++;
@@ -114,6 +192,7 @@ int	eval_line(t_coup *coups, t_coord coord, signed int xm, signed int ym, char p
   else
   	return (0);
 }
+*/
 
 //on renvoie 0 si aucun gagnant, 1 pour player1, et 2 pour player2
 int gameended(t_noeud *gamestate, char player)
