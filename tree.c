@@ -50,7 +50,7 @@ t_noeud		*MaxMove(t_noeud *gamepos, int depth, char player, int alpha, int beta,
 //	    displaymoves(curmove->coup);
 	    if(depth==MAXDEPTH && args.debug==FULL_DEBUG)
 	      {
-	        printf("MAX(%d/%d):%d\n--\n", i, nbcas, Value(curmove));
+	        printf("MAX(%d/%d):(%d;%d)=%d\n--\n", i, nbcas, move->x, move->y, Value(curmove));
 	    //    displaymoves(curmove->coup);
 
 	      }

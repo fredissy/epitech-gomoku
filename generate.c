@@ -83,5 +83,7 @@ t_noeud*GenerateMove(t_noeud *parent, int numerocas, int nbcas, int depth, t_dim
   fils->x=coord.x;
   fils->y=coord.y;
   //fils->fils = 0;
+  //printf("gen:%d %d:\n", coord.x, coord.y);
   return(fils);
+
 }

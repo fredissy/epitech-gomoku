@@ -14,18 +14,20 @@ int evalnode(t_noeud *gamestate, char player, t_args args)
 	  coord.y=coup->y;
 	  if(coup->player ==player)
 	  {
-		  score+=5*evalcase_align(gamestate->coup, coord, player); //on aligne des pions, 2 points par pion aligné
+	      printf("(%d;%d)", coord.x, coord.y);
+		  score+=2*evalcase_align(gamestate->coup, coord, player); //on aligne des pions, 2 points par pion aligné
 		  score+=10*(fills_hole(gamestate->coup, coord, player)); //on remplit un xOxx adverse, 10x par remplissage
-		  score+=25*(blocks_ennemy(gamestate->coup, coord, player));//on bloque une evolution vers un XXXX adverse, 10 points par blocage
-		  score+=30*(prise_paire_adversaire(gamestate->coup, coord, player));//on prend une paire a l'adversaire, 15 points par prise
+		  score+=30*(blocks_ennemy(gamestate->coup, coord, player));//on bloque une evolution vers un XXXX adverse, 10 points par blocage
+		  score+=20*(prise_paire_adversaire(gamestate->coup, coord, player));//on prend une paire a l'adversaire, 15 points par prise
 		  if(gamestate->paires[1] ==4)
 		  	score-=100*(prise_paire_adversaire(gamestate->coup, coord, !player));//il nous reste 1 paire a prendre avant de mourir, donc -100
-		  score-=30*(prise_paire_adversaire(gamestate->coup, coord, !player));//on se fait manger une paire, pas intéressant donc -15 points
-		  score+=50*(get_maxalign_coord(coord, gamestate, player) == 5);//on réussit à aligner 5 pions => victoire, +100 points
-		  score-=100*(get_maxalign_coord(coord, gamestate, !player) == 5);//l'adversaire aligne 5 pions => -80 pour cette position
+		  else
+		    score-=30*(prise_paire_adversaire(gamestate->coup, coord, !player));//on se fait manger une paire, pas intéressant donc -15 points
+		  //score-=100*(get_maxalign_coord(coord, gamestate, !player) == 5);//l'adversaire aligne 5 pions => -80 pour cette position
 	  }
 	  coup = coup->next;
   }
+  score+=100*(get_maxalign_coord(coord, gamestate, player) == 5);//on réussit à aligner 5 pions => victoire, +100 points
   gamestate->value=/*best*/score;
 //  printf(" %d %d => %d\n", coord.x, coord.y, score);
   return(score);
@@ -53,6 +55,7 @@ int	evalcase_align(t_coup *coups, t_coord coord, char player)
 	score=MAX(score,eval_line(coups, coord, 0, -1, player));
   if(coord.x<=DIM-6 && coord.x>=0 && coord.y>=5 && coord.y<=DIM)
 	score=MAX(score,eval_line(coups, coord, 1, -1, player));
+  printf("%d;",score);
   return(score);
 }
 

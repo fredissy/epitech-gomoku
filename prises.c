@@ -21,6 +21,7 @@ int	prise_paire_adversaire(t_coup *coups, t_coord coord, char player)
 	i=0;
 	while(i<8)
 		free(tabs[i++]);
+printf("%d;%d;", player, nbre);
 	return(nbre);
 }
 
