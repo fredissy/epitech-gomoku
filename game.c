@@ -29,6 +29,7 @@ void		gameloop_1p(t_args args)
       ajoutecoup(jeu, toplay, PLAYER2);
       if(args.debug==RUN_DEBUG||args.debug==FULL_DEBUG)
 	    displaymoves(jeu->coup);
+	  gagne=gameended(jeu);
     }
 }
 
@@ -43,18 +44,13 @@ void	gameloop_2p(t_args args)
     {
       toplay=saisie(PLAYER1, jeu->coup);
       ajoutecoup(jeu, toplay, PLAYER1);
-    //  if((gagne=evalnode(jeu, PLAYER1, args))>=5)
-	//printf("Joueur 1 a gagne!\n");
       jeu->player = PLAYER1;
       toplay = saisie(PLAYER2, jeu->coup);
       ajoutecoup(jeu, toplay, PLAYER2);
-      //      if(args.debug==RUN_DEBUG)
-      //displaymoves(jeu->coup);
-      //if((gagne=evalnode(jeu, PLAYER2, args))>=5)
-	//printf("Joueur 2 a gagne!\n");
-    //evalnode(jeu, PLAYER2, args);
-    //  gagne = gameended(jeu);
+	  gagne = gameended(jeu);
+	  displaymoves(jeu->coup);
     }
+    printf("fini!\n");
 }
 
 t_args arguments(int ac, char **av)

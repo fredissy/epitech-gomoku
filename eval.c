@@ -22,13 +22,11 @@ int evalnode(t_noeud *gamestate, char player, t_args args)
 		}
 		coup = coup->next;
     }
- // printf("align maxi=%d\n", bestscore);
   coord.x=gamestate->x;
   coord.y=gamestate->y;
   if(blocks_ennemy(gamestate->coup, coord, player))
     score=10;
   bestscore = MAX(score, bestscore);
-  //printf("MAXALIGN=%d\n", get_maxalign(gamestate->coup, gamestate));
   if(get_maxalign(gamestate->coup, gamestate) == 5)
   	score=20;
   gamestate->value=bestscore;
@@ -40,71 +38,52 @@ int	evalcase_align(t_coup *coups, t_coord coord, char player)
   int	score=0;
   int tmpscore=0;
 
-  //t_coord coord;
-  //coord.x=x;
-  //coord.y=y;
   if(occupee(coups, coord)== NOPLAYER)
     return (0);
   if(coord.x<=DIM-6 && coord.x>=0)
   {
 	 tmpscore = eval_line(coups, coord, 1, 0, player);
-	 //if(tmpscore==0)
-	 //	return (0);
      score = MAX(score, tmpscore);
   }
 
   if(coord.y<=DIM-6 && coord.y>=0 && coord.x<=DIM-6 && coord.x>=0)
   {
 	 tmpscore = eval_line(coups, coord, 1, 1, player);
-	 //if(tmpscore==0)
-	 //	return (0);
      score = MAX(score, tmpscore);
   }
 
   if(coord.y<=DIM-6 && coord.y>=0)
   {
     tmpscore=eval_line(coups, coord, 0, 1, player);
-    //if(tmpscore==0)
-	//	return (0);
 	score = MAX(score, tmpscore);
   }
   if(coord.y<=DIM-6 && coord.y>=0 && coord.x>=5 && coord.x<=DIM)
   {
     tmpscore=eval_line(coups, coord, -1, 1, player);
-    //if(tmpscore==0)
-	//  	return (0);
 	score = MAX(score, tmpscore);
   }
 
   if(coord.x>=5 && coord.x<=DIM)
   {
  	tmpscore=eval_line(coups, coord, -1, 0, player);
-    //if(tmpscore==0)
-	//	return (0);
 	score = MAX(score, tmpscore);
   }
 
   if(coord.x>=5 && coord.x<=DIM && coord.y>=5 && coord.y<=DIM)
   {
     tmpscore=eval_line(coups, coord, -1, -1, player);
-    //if(tmpscore==0)
-	//	return (0);
 	score = MAX(score, tmpscore);
   }
 
   if(coord.y>=5 && coord.y<=DIM)
   {
 	tmpscore=eval_line(coups, coord, 0, -1, player);
-	//if(tmpscore==0)
-	//	return (0);
 	score = MAX(score, tmpscore);
   }
 
   if(coord.x<=DIM-6 && coord.x>=0 && coord.y>=5 && coord.y<=DIM)
   {
 	tmpscore=eval_line(coups, coord, 1, -1, player);
-	//if(tmpscore==0)
-	//	return (0);
 	score = MAX(score, tmpscore);
   }
   return(score);
@@ -155,8 +134,6 @@ backup=coord;
 		nbfree++;
 		i++;
     }
-//  if(nbfree+score>=5)
-//  	printf("(%d;%d) %d ",backup.x, backup.y, score);
   if(nbfree+score>=5)
 	return(score);
   else
@@ -206,26 +183,20 @@ int blocks_ennemy(t_coup *coups, t_coord coord, char player)
 	tabs[8] = 0;
 
 	while(i<8)
-	{
-//		printf("%s ", tabs[i]);
-		nbre+=does_block_ennemy(tabs[i++], player);
-	}
-//	printf("\n");
+	  nbre+=does_block_ennemy(tabs[i++], player);
 	i=0;
 	while(i<8)
 		free(tabs[i++]);
 	if(nbre)
-{
-	printf("ennemy blocked!:");displaymoves(coups);
-	return(1);
-}
+    {
+  	  printf("ennemy blocked!:");displaymoves(coups);
+	  return(1);
+    }
 	return (0);
 }
 
 int does_block_ennemy(char *chaine, signed char player)
 {
-	//definir les situations sous forme de chaine, et les comparer à chaine
-	//un peu comme la vérif du double 3
 	char modele1[4]={MOI, ADVERSAIRE, ADVERSAIRE, ADVERSAIRE};
 	char modele2[5]={MOI, ADVERSAIRE, ADVERSAIRE, ADVERSAIRE, MOI};
 	if(!strncmp((char*)&modele2, chaine, 5))
@@ -235,6 +206,7 @@ int does_block_ennemy(char *chaine, signed char player)
 	return(0);
 }
 
+//pareil que buildchaine, sans décalage au depart
 char		*buildchaine2(t_coup *coups, int dx, int dy, t_coord coord, signed char player, int size)
 {
 	char	*chaine;
@@ -258,9 +230,11 @@ int gameended(t_noeud *gamestate)
 	t_coup *coup;
 	int	nbalign=0;
 	coup = gamestate->coup;
-	while(coup && nbalign <5)
+	while(coup)
 	{
 		nbalign=get_maxalign(coup, gamestate);
+		if(nbalign==5)
+		  return (1);
 		coup = coup->next;
 	}
 	return(nbalign==5);
@@ -274,10 +248,10 @@ int get_maxalign(t_coup *tocheck, t_noeud *gamestate)
 	int		nbre = 0;
 	int		bestnbre=0;
 	int		i=0;
-	coord.x=gamestate->x;
-	coord.y=gamestate->y;
+	coord.x=tocheck->x;
+	coord.y=tocheck->y;
 	coups = gamestate->coup;
-
+printf("(%d;%d) ", coord.x, coord.y);
 	tabs[0] = buildchaine2(coups, 1, 0, coord, PLAYER1, 5); //droite
 	tabs[1] = buildchaine2(coups, 1, 1, coord, PLAYER1, 5); //bas droite
 	tabs[2] = buildchaine2(coups, 0, 1, coord, PLAYER1, 5); //bas
@@ -290,14 +264,15 @@ int get_maxalign(t_coup *tocheck, t_noeud *gamestate)
 
 	while(i<8)
 	{
+		printchaine(tabs[i], 5);
 		nbre = checkstring_for_victory(tabs[i++]);
+		printf("%d\n", nbre);
 		bestnbre=MAX(nbre, bestnbre);
 	}
 	i=0;
 	while(i<8)
 		free(tabs[i++]);
-//	if(nbre)
-      return(bestnbre);
+    return(bestnbre);
 }
 
 
@@ -307,4 +282,12 @@ int checkstring_for_victory(char *chaine)
 	while(chaine[i]==chaine[0])
 	  i++;
 	return (i);
+}
+
+void printchaine(char *chaine, int len)
+{
+	int i = 0;
+	while(i<len)
+		printf("%c",chaine[i++]);
+	printf(" ");
 }
