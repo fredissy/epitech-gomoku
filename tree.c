@@ -42,8 +42,9 @@ t_noeud		*MaxMove(t_noeud *gamepos, int depth, char player, int alpha, int beta,
       while(i<nbcas)
       {
 	    move = GenerateMove(gamepos, i, depth - 1);
-	    //displaymoves(gamepos->coup);
-
+//	    displaymoves(gamepos->coup);
+		if(nbvoisins(gamepos, generatecoord(move->x, move->y))!=0)
+		{
 	    curmove = MinMove(move, depth - 1, !player, alpha, beta, args);
 //	    printf("minmove ok\n");
 //	    displaymoves(curmove->coup);
@@ -73,6 +74,7 @@ t_noeud		*MaxMove(t_noeud *gamepos, int depth, char player, int alpha, int beta,
 	      }
 //	  if(alpha>beta)
 //	    return (bestmove);
+		}
 	    free(move);
 	  i++;
 	}
@@ -107,7 +109,8 @@ t_noeud	*curmove;
 	{
 		move = GenerateMove(gamepos, i, depth - 1);
 //		displaymoves(move->coup);
-
+		if(nbvoisins(gamepos, generatecoord(move->x, move->y))!=0)
+		{
     	curmove = MaxMove(move, depth - 1, !player, alpha, beta, args);
 	    if(depth==MAXDEPTH && args.debug==FULL_DEBUG)
 	    {
@@ -130,6 +133,7 @@ t_noeud	*curmove;
 	    }
 //	  if(alpha>beta)
 //	    return(bestmove);
+}
       free(move);
 	  i++;
 	}

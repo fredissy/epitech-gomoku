@@ -13,7 +13,11 @@ t_coord	saisie(signed char player, t_coup *coups)
   while(!saisie_ok(coups, saisie, player, flag))
     {
 		flag++;
-		printf("joueur %d coords x;y? ", player+1);
+		if(player==PLAYER1)
+			printf("%c%sjoueur %d%c%s coords x;y? ", ESCAPE, RED, player+1, ESCAPE, DEFAULT);
+		if(player==PLAYER2)
+			printf("%c%sjoueur %d%c%s coords x;y? ", ESCAPE, GREEN, player+1, ESCAPE, DEFAULT);
+
         scanf("%s", (char*)&buffer);
         if(!deal_keywords(coups, player, (char*)&buffer));
           sscanf((char*)&buffer,"%u;%u", &saisie.x, &saisie.y);

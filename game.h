@@ -19,6 +19,9 @@
 #define HINT_KEYWORD "hint"
 #define QUIT_KEYWORD "quit"
 
+//distance par rapport aux autres cases a laquelle une case ne sera pas evaluee
+#define TOLERANCE 2
+
 //taille du damier
 #define DIM 15
 
@@ -39,6 +42,12 @@
 #define MOI '1'
 #define ADVERSAIRE '2'
 #define PERSONNE '0'
+
+//couleurs pour l'affichage
+#define ESCAPE 27
+#define RED "[31m"
+#define GREEN  "[36m"
+#define DEFAULT "[0m"
 
 #include "structs.h"
 #include "prototypes.h"

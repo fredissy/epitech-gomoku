@@ -54,9 +54,9 @@ void showgrid(t_noeud *gamestate)
 	  {
         player=dans(gamestate->coup, generatecoord(x, y), PLAYER1);
         if(player==MOI)
-			printf("o|");
+			printf("%c%so%c%s|", ESCAPE, RED, ESCAPE, DEFAULT);
 		if(player==ADVERSAIRE)
-			printf("x|");
+			printf("%c%sx%c%s|", ESCAPE, GREEN, ESCAPE, DEFAULT);
 		if(player==PERSONNE)
 			printf("_|");
 		x++;
@@ -68,5 +68,5 @@ void showgrid(t_noeud *gamestate)
 
 void infoprises(t_noeud *jeu)
 {
-	printf("paires perdues P1:%d, P2:%d\n", jeu->paires[0], jeu->paires[1]);
+	printf("paires perdues %c%sP1:%d%c%s, %c%sP2:%d%c%s\n", ESCAPE, RED, jeu->paires[0], ESCAPE, DEFAULT, ESCAPE, GREEN, jeu->paires[1], ESCAPE, DEFAULT);
 }

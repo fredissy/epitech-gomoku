@@ -32,7 +32,7 @@ void		gameloop_1p(t_args args)
 	  {
 		  toplay = MinMax(jeu, MAXDEPTH, PLAYER1, args);
 		  if(args.debug==RUN_DEBUG||args.debug==FULL_DEBUG)
-			printf("ordi joue sur:(%d;%d)\n",toplay.x, toplay.y);
+			printf("%c%sordi%c%s joue sur:(%d;%d)\n",ESCAPE, GREEN, ESCAPE, DEFAULT, toplay.x, toplay.y);
 		  ajoutecoup(jeu, toplay, PLAYER2);
 		  dealprises(jeu, toplay, PLAYER2);
 		  if(args.debug==FULL_DEBUG)

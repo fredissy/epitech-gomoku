@@ -72,5 +72,6 @@ t_noeud*GenerateMove(t_noeud *parent, int numerocas, int depth)
   fils->x=coord.x;
   fils->y=coord.y;
   //fils->fils = 0;
+ // printf("%d %d\n", coord.x, coord.y);
   return(fils);
 }

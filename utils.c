@@ -164,3 +164,15 @@ t_coord generatecoord(int x, int y)
 	ret.y=y;
 	return(ret);
 }
+
+int nbvoisins(t_noeud *jeu, t_coord coord)
+{
+	int x, y;
+	int nbre=0;
+
+	for(y=coord.y-2;y<coord.y+2;y++)
+	  for(x=coord.y-2; x<coord.x+2;x++)
+	    if(occupee(jeu->coup, generatecoord(x,y)) != NOPLAYER && (x||y))
+	      nbre++;
+	return (nbre);
+}

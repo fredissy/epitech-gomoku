@@ -22,7 +22,6 @@ int			occupee2(t_coup *orig, t_coord coord);
 int			x(t_noeud *noeud);
 int			y(t_noeud *noeud);
 int			occupee(t_coup *orig, t_coord coord);
-void		displaymoves(t_coup *coup);
 char		occupant(t_coup *cellule);
 int			nbpions(t_noeud *gamepos);
 t_dimensions	getdimensions(t_noeud *gamestate);
@@ -30,8 +29,9 @@ int			Value(t_noeud *noeud);
 char		*buildchaine(t_coup *coups, int dx, int dy, t_coord coord, signed char player, int size, int decalage);
 int			dans(t_coup *orig, t_coord coord, signed char player);
 t_coord		generatecoord(int x, int y);
-int getcolnum(char col);
-char getcolletter(int col);
+int 		getcolnum(char col);
+char 		getcolletter(int col);
+int 		nbvoisins(t_noeud *jeu, t_coord coord);
 
 
 //minmax
@@ -68,4 +68,4 @@ void showgrid(t_noeud *gamestate);
 void printchaine(char *chaine, int len);
 void showhint(t_coup *coups, signed char player);
 void infoprises(t_noeud *jeu);
-
+void displaymoves(t_coup *coup);
