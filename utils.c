@@ -189,6 +189,26 @@ int	occupee(t_coup *orig, t_coord coord)
     }
   return (NOPLAYER);
 }
+//pareil que occupee'1', mais precise si dehors ou non
+int	occupee2(t_coup *orig, t_coord coord)
+{
+  if(coord.x==DIM+1 || coord.y ==DIM+1)
+    return (PLAYER1);
+  if(coord.x>DIM||coord.y>DIM||coord.x<0||coord.y<0)
+  return(DEHORS);
+  while(orig)
+    {
+      //      printf("[%d;%d](%d;%d)\n", orig->x, orig->y, coord.x, coord.y);
+      if(orig->x == coord.x && orig->y == coord.y)
+	  {
+	  //	  printf("retour:%d\n",orig->player);
+	    return(orig->player);
+	  }
+      orig=orig->next;
+    }
+  return (NOPLAYER);
+}
+
 
 t_coord generatecoord(int x, int y)
 {

@@ -6,6 +6,7 @@
 #define NOPLAYER -1
 #define PLAYER1 0
 #define PLAYER2 1
+#define DEHORS -2
 
 //pour les arguments
 #define UNJOUEUR 0
@@ -16,7 +17,7 @@
 //params generaux du jeux
 #define FREE 0
 #define DIM 19
-#define MAXDEPTH 3
+#define MAXDEPTH 1
 #define EXTRA 2
 
 //max ou min de deux valeurs

@@ -24,15 +24,15 @@ void		gameloop_1p(t_args args)
       ajoutecoup(jeu, toplay, PLAYER1);
       jeu->player = PLAYER1;
       if( (gagne=evalnode(jeu, PLAYER1, args))>=5)
-	printf("Joueur 1 a gagne!\n");
+	    printf("Joueur 1 a gagne!\n");
       toplay = MinMax(jeu, MAXDEPTH, PLAYER1, args);
       if(args.debug==RUN_DEBUG||args.debug==FULL_DEBUG)
-	printf("ordi joue sur:(%d;%d)\n",toplay.x, toplay.y);
+	    printf("ordi joue sur:(%d;%d)\n",toplay.x, toplay.y);
       ajoutecoup(jeu, toplay, PLAYER2);
       if(args.debug==RUN_DEBUG||args.debug==FULL_DEBUG)
-	displaymoves(jeu->coup);
+	    displaymoves(jeu->coup);
       if((gagne=evalnode(jeu, PLAYER2, args))>=5)
-	printf("Joueur 2 a gagne!\n");
+	    printf("Joueur 2 a gagne!\n");
       gagne = gameended(jeu);
     }
 }
@@ -48,16 +48,17 @@ void	gameloop_2p(t_args args)
     {
       toplay=saisie(PLAYER1, jeu->coup);
       ajoutecoup(jeu, toplay, PLAYER1);
-      if((gagne=evalnode(jeu, PLAYER1, args))>=5)
-	printf("Joueur 1 a gagne!\n");
+    //  if((gagne=evalnode(jeu, PLAYER1, args))>=5)
+	//printf("Joueur 1 a gagne!\n");
       jeu->player = PLAYER1;
       toplay = saisie(PLAYER2, jeu->coup);
       ajoutecoup(jeu, toplay, PLAYER2);
       //      if(args.debug==RUN_DEBUG)
-      displaymoves(jeu->coup);
-      if((gagne=evalnode(jeu, PLAYER2, args))>=5)
-	printf("Joueur 2 a gagne!\n");
-      gagne = gameended(jeu);
+      //displaymoves(jeu->coup);
+      //if((gagne=evalnode(jeu, PLAYER2, args))>=5)
+	//printf("Joueur 2 a gagne!\n");
+    evalnode(jeu, PLAYER2, args);
+    //  gagne = gameended(jeu);
     }
 }
 

@@ -4,10 +4,10 @@ t_coord	  MinMax(t_noeud *gamepos, int depth, char player, t_args args)
 {
   t_noeud *i;
   t_coord toplay;
-
   i=MaxMove(gamepos, depth, player, 1000, 1000, args);
   toplay.x=x(i);
   toplay.y=y(i);
+  printf("   "); displaymoves(i->coup);
   //  removearbrecontent(i);
   return(toplay);
 }
@@ -15,45 +15,61 @@ t_coord	  MinMax(t_noeud *gamepos, int depth, char player, t_args args)
 t_noeud		*MaxMove(t_noeud *gamepos, int depth, char player, int alpha, int beta, t_args args)
 {
   t_noeud	*bestmove;
-  t_noeud	**moves;
-
+//  t_noeud	**moves;
+  t_noeud   *move;
+  t_dimensions dim;
   int		i=0;
+
+  int		nbcas;
+  bestmove = malloc(sizeof(t_noeud));
   if(gameended(gamepos)||depth==0)
     {
-      evalnode(gamepos, player, args);
+	//  printf("DEPTH=0 %d\n", PLAYER2);
+      evalnode(gamepos, PLAYER2, args);
       return(gamepos);
     }
   else
     {
-      bestmove=0;
-      moves=GenerateMoves(gamepos, depth - 1);
-      while(moves[i])
-	{
-	  t_noeud	*curmove;
-	  curmove = MinMove(moves[i], depth - 1, !player, alpha, beta, args);	
-	  if(depth==MAXDEPTH && args.debug==FULL_DEBUG)
-	    {
-	      printf("MAX:%d:%d\n", i, Value(curmove));
-	      displaymoves(curmove->coup);
-	    }
-	  if(i==0)
-	    {
-	      bestmove=moves[i];
-	      bestmove->value = Value(curmove);
-	      gamepos->value = Value(curmove);
-	      alpha = Value(curmove);
-	      if(depth==MAXDEPTH)
-		beta = Value(curmove);
-	    }
-	  if(Value(curmove)>Value(bestmove))
-	    {
-	      bestmove=moves[i];
-	      bestmove->value = Value(curmove);
-	      gamepos->value = Value(curmove);
-	      alpha = Value(curmove);
-	    }
-	  if(alpha>beta)
-	    return (bestmove);
+	  dim = getdimensions(gamepos);
+  	  nbcas = dim.width * dim.height - nbpions(gamepos);
+      while(i<nbcas)
+      {
+	    move = GenerateMove(gamepos, i, depth - 1);
+	    //displaymoves(gamepos->coup);
+	    t_noeud	*curmove;
+	    curmove = MinMove(move, depth - 1, !player, alpha, beta, args);
+//	    printf("minmove ok\n");
+//	    displaymoves(curmove->coup);
+	   // if(depth==MAXDEPTH && args.debug==FULL_DEBUG)
+	      //{
+	        printf("move=(%d;%d), curmove=(%d;%d) ", move->x, move->y, curmove->x, curmove->y);
+	        printf("MAX(%d/%d):%d ", i, nbcas, Value(curmove));
+	        displaymoves(curmove->coup);
+
+	      //}
+	    if(i==0)
+	      {
+//			bestmove->x=move->x;
+//			bestmove->y=move->y;
+			bcopy(move, bestmove, sizeof(t_noeud));
+	        bestmove->value = Value(curmove);
+	        gamepos->value = Value(curmove);
+	   //     alpha = Value(curmove);
+	   //     if(depth==MAXDEPTH)
+	   //     beta = Value(curmove);
+	      }
+	    if(Value(curmove)>Value(bestmove))
+	      {
+//			bestmove->x=move->x;
+//			bestmove->y=move->y;
+			bcopy(move, bestmove, sizeof(t_noeud));
+	        bestmove->value = Value(curmove);
+	        gamepos->value = Value(curmove);
+	      //  alpha = Value(curmove);
+	      }
+//	  if(alpha>beta)
+//	    return (bestmove);
+	    free(move);
 	  i++;
 	}
       return (bestmove);
@@ -64,42 +80,49 @@ t_noeud		*MinMove(t_noeud *gamepos, int depth, char player, int alpha, int beta,
 {
   t_noeud	*bestmove;
   t_noeud	*curmove;
-  t_noeud	**moves;
+  t_noeud *move;
+  t_dimensions dim;
   int		i = 0;
-
+  int nbcas;
+    bestmove = malloc(sizeof(t_noeud));
   if(gameended(gamepos)||depth==0)
     {
-      evalnode(gamepos, player, args);
+	//	printf("depth=0\n");
+      //evalnode(gamepos, player, args);
+      evalnode(gamepos, PLAYER2, args);
       return(gamepos);
     }
   else
     {
-      bestmove=0;
-      moves=GenerateMoves(gamepos, depth -1);
-      while(moves[i])
+	  dim = getdimensions(gamepos);
+	  nbcas = dim.width * dim.height - nbpions(gamepos);
+      while(i<nbcas)
 	{
-	  curmove = MaxMove(moves[i], depth - 1, !player, alpha, beta, args);
-	  if(depth==MAXDEPTH && args.debug==FULL_DEBUG)
-	    {
-	      printf("depth=%dmin:%d:%d\n",depth, Value(curmove), Value(bestmove));
+		move = GenerateMove(gamepos, i, depth - 1);
+//		displaymoves(move->coup);
+    	curmove = MaxMove(move, depth - 1, !player, alpha, beta, args);
+	  //  if(depth==MAXDEPTH && args.debug==FULL_DEBUG)
+	  //  {
+	      printf("\n--min:%d:%d ", Value(curmove), Value(bestmove));
 	      displaymoves(curmove->coup);
-	    }
-	  if(i==0)
-	    {
-	      gamepos->value=Value(curmove);
-	      bestmove=moves[i];
-	      bestmove->value = Value(curmove);
-	      beta=Value(curmove);
+	  //  }
+	    if(i==0)
+	      {
+   			bcopy(move, bestmove, sizeof(t_noeud));
+	        gamepos->value=Value(curmove);
+	        bestmove->value = Value(curmove);
+	    //  beta=Value(curmove);
 	    }
 	  if(Value(curmove)<Value(bestmove))
 	    {
-	      bestmove=moves[i];
-	      bestmove->value = Value(curmove);
-	      gamepos->value = Value(curmove);
-	      beta=Value(curmove);
+			bcopy(move, bestmove, sizeof(t_noeud));
+	        bestmove->value = Value(curmove);
+	        gamepos->value = Value(curmove);
+	        //  beta=Value(curmove);
 	    }
-	  if(alpha>beta)
-	    return(bestmove);
+//	  if(alpha>beta)
+//	    return(bestmove);
+      free(move);
 	  i++;
 	}
       return (bestmove);

@@ -9,8 +9,7 @@ int evalnode(t_noeud *gamestate, char player, t_args args)
   int	score=0;
   t_dimensions	dim;
   t_coup	*coup;
-  player=gamestate->player;
-
+//  player=gamestate->player;
   if(gamestate==0)
     return (0);
   coup=gamestate->coup;
@@ -21,15 +20,20 @@ int evalnode(t_noeud *gamestate, char player, t_args args)
 
   while(coup)
     {
-      score = evalcase(gamestate->coup, coup->x, coup->y, player);
-      bestscore = MAX(score, bestscore);
-      coup = coup->next;
+		if(coup->player==player)
+		{
+			score = evalcase(gamestate->coup, coup->x, coup->y, player);
+      		if(score==0)
+      		return(0);
+      		bestscore = MAX(score, bestscore);
+		}
+		coup = coup->next;
     }
-  if(args.debug==FULL_DEBUG)
-    {
-		displaymoves(gamestate->coup);
-		printf("=>%d(P%d)\n", bestscore, player+1);
-    }
+//  if(args.debug==FULL_DEBUG)
+//    {
+	//	displaymoves(gamestate->coup);
+	//	printf("eval=>%d(P%d)\n", bestscore, player+1);
+//    }
   gamestate->value=bestscore;
   //free(tab);
   return(bestscore);
@@ -40,27 +44,74 @@ int evalnode(t_noeud *gamestate, char player, t_args args)
 int	evalcase(t_coup *coups, int x, int y, char player)
 {
   int	score=0;
+  int tmpscore=0;
   t_coord coord;
   coord.x=x;
   coord.y=y;
   if(occupee(coups, coord)== NOPLAYER)
     return (0);
   if(x<=DIM-6 && x>=0)
-    score = MAX(score, eval_line(coups, coord, 1, 0, player));
+  {
+	 tmpscore = eval_line(coups, coord, 1, 0, player);
+	 //if(tmpscore==0)
+	 //	return (0);
+     score = MAX(score, tmpscore);
+  }
+
   if(y<=DIM-6 && y>=0 && x<=DIM-6 && x>=0)
-    score = MAX(score, eval_line(coups, coord, 1, 1, player));
+  {
+	 tmpscore = eval_line(coups, coord, 1, 1, player);
+	 //if(tmpscore==0)
+	 //	return (0);
+     score = MAX(score, tmpscore);
+  }
+
   if(y<=DIM-6 && y>=0)
-    score = MAX(score, eval_line(coups, coord, 0, 1, player));
+  {
+    tmpscore=eval_line(coups, coord, 0, 1, player);
+    //if(tmpscore==0)
+	//	return (0);
+	score = MAX(score, tmpscore);
+  }
   if(y<=DIM-6 && y>=0 && x>=5 && x<=DIM)
-    score = MAX(score, eval_line(coups, coord, -1, 1, player));
+  {
+    tmpscore=eval_line(coups, coord, -1, 1, player);
+    //if(tmpscore==0)
+	//  	return (0);
+	score = MAX(score, tmpscore);
+  }
+
   if(x>=5 && x<=DIM)
-    score = MAX(score, eval_line(coups, coord, -1, 0, player));
+  {
+ 	tmpscore=eval_line(coups, coord, -1, 0, player);
+    //if(tmpscore==0)
+	//	return (0);
+	score = MAX(score, tmpscore);
+  }
+
   if(x>=5 && x<=DIM && y>=5 && y<=DIM)
-    score = MAX(score, eval_line(coups, coord, -1, -1, player));
+  {
+    tmpscore=eval_line(coups, coord, -1, -1, player);
+    //if(tmpscore==0)
+	//	return (0);
+	score = MAX(score, tmpscore);
+  }
+
   if(y>=5 && y<=DIM)
-    score = MAX(score, eval_line(coups, coord, 0, -1, player));
+  {
+	tmpscore=eval_line(coups, coord, 0, -1, player);
+	//if(tmpscore==0)
+	//	return (0);
+	score = MAX(score, tmpscore);
+  }
+
   if(x<=DIM-6 && x>=0 && y>=5 && y<=DIM)
-    score = MAX(score, eval_line(coups, coord, 1, -1, player));
+  {
+	tmpscore=eval_line(coups, coord, 1, -1, player);
+	//if(tmpscore==0)
+	//	return (0);
+	score = MAX(score, tmpscore);
+  }
   return(score);
 }
 
@@ -70,6 +121,7 @@ int	eval_line(t_coup *coups, t_coord coord, signed int xm, signed int ym, char p
 {
   char	cells[9];
   int	i=0;
+  int	nbfree=0;
   char	player_2;
   int	score;
 
@@ -77,31 +129,42 @@ int	eval_line(t_coup *coups, t_coord coord, signed int xm, signed int ym, char p
     player_2=PLAYER2;
   else
     player_2=PLAYER1;
+
   //on construit la ligne a inspecter
   coord.x-=4*xm;
   coord.y-=4*ym;
   for(i=0;i<10;i++)
   {
-	cells[i] =occupee(coups, coord);
+	cells[i] =occupee2(coups, coord);
 	coord.x+=xm;
 	coord.y+=ym;
   }
-  i=1;
-  score=1;
-  while(cells[i]==player && i<6)
+
+  i=0;
+  score=0;
+  while(cells[i]!=player && i<10)
+  {
+	nbfree++;
+	if(cells[i]==player_2||cells[i]==DEHORS)
+		nbfree=0;
+  	i++;
+  }
+  while(cells[i]==player && i<10)
     {
       score++;
       i++;
     }
-  //  printf(" (%d) ", score);
-  while(i<6)
+  while(i<10 && cells[i]!=player_2)
     {
-      if(cells[i]==player_2)
-	score=0;
-      i++;
+		nbfree++;
+		i++;
     }
-  //   printf(" => %d\n", score);
-  return(score);
+//  if(nbfree+score>=5)
+  	printf("(%d;%d)=>%d\n",coord.x, coord.y, nbfree+score);
+  if(nbfree+score>=5)
+	return(score);
+  else
+  	return (0);
 }
 
 //t_tab *generatetable(t_coup *first)

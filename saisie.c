@@ -54,10 +54,9 @@ int			checkdoubletrois(t_coup *coups, t_coord saisie, signed char player)
 	return(nbre>1);
 }
 
-/* dit si une chaine est une situation de double trois ou non
-** on utilise pour cela deux modeles de chaine. le joueur joue
-** dans la 2eme case des modeles. voir buildchaine pour la
-** construction de la chaine de comparaison
+/* dit si une chaine est une situation de double trois ou non on utilise pour
+** cela deux modeles de chaine. le joueur joue dans la 2eme case des modeles.
+** voir buildchaine pour la construction de la chaine de comparaison
 */
 int		is_doubletrois(char *chaine, signed char player)
 {
