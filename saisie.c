@@ -90,9 +90,8 @@ int			checkdoubletrois(t_coup *coups, t_coord saisie, signed char player)
 */
 int		is_doubletrois(char *chaine, signed char player)
 {
-	char modele1[5]={PERSONNE,/*joue ici*/PERSONNE,MOI,MOI,PERSONNE};
-	char modele2[5]={PERSONNE,/*joue ici*/PERSONNE,PERSONNE,MOI,MOI};
-
+	char modele1[5]={PERSONNE, PERSONNE, MOI, MOI, PERSONNE};
+	char modele2[5]={PERSONNE, PERSONNE, PERSONNE, MOI, MOI};
 	if(!strncmp((char*)&modele1, chaine, 5))
 		return(1);
 	if(!strncmp((char*)&modele2, chaine, 5))

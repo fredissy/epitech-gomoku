@@ -122,32 +122,7 @@ void	avance(t_dimensions *dim, t_coord *initial, int rang)
 	    }
 	}
 }
-/*
-//donne le nbre de cases occupees avant celle en nouv
-//                       .-------------------------'
-int	avant(t_coord *nouv, t_coup *orig)
-{
-  int	nbre;
-  nbre = 0;
-  printf("(%d;%d)", nouv->x, nouv->y);
-  while(orig)
-    {
-    if(orig->y < nouv->y) //si sur une ligne avant
-	{
-		printf(".");
-	nbre++;
-}
-      if(orig->y == nouv->y && orig->x <= nouv->x) //si sur la meme ligne, avant en x
-	{
-		printf(".");
-	nbre++;
-}
-      orig=orig->next;
-    }
-printf("(%d avant) ", nbre);
-  return nbre;
-}
-*/
+
 int	occupee(t_coup *orig, t_coord coord)
 {
   if(coord.x==DIM+1 || coord.y ==DIM+1)
@@ -188,20 +163,4 @@ t_coord generatecoord(int x, int y)
 	ret.x=x;
 	ret.y=y;
 	return(ret);
-}
-
-int getcolnum(char col)
-{
-	if(col>='A' && col<='A'+DIM)
-		return(col-'A');
-	if(col>='a' && col<='a'+DIM)
-		return(col-'a');
-	return(-1);
-}
-
-char getcolletter(int col)
-{
-	if(col>DIM && col<0)
-	  return(-1);
-	return(col+'A');
 }
