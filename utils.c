@@ -70,7 +70,7 @@ int	nbpions(t_noeud *gamepos)
       nbre++;
     }
   //  printf("=>%d\n", nbre);
-  return (nbre);
+  return (nbre-1);
 }
 
 char occupant(t_coup *coup)

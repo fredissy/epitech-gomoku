@@ -29,7 +29,7 @@
 #define DIM 15
 
 //profondeur de rechercher
-#define MAXDEPTH 1
+#define MAXDEPTH 2
 
 //expansion a chaque fois
 #define EXTRA 1

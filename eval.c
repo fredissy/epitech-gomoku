@@ -1,35 +1,41 @@
 #include "game.h"
-//faire qquechose pour ne pas evaluer une case qui n'a pas de voisin dans les 2 cases aux alentours
+
 int evalnode(t_noeud *gamestate, char player, t_args args)
 {
+	int i;
   int	score=0;
   t_coup	*coup;
   t_coord coord;
   if(gamestate==0)
     return (0);
-  coup=gamestate->coup;//->next;//histoire de sauter le premier qui ne sert à rien
+  coup=gamestate->coup;
   while(coup)
-  {//Faire un test comme quoi on n'évalue pas si le joueur du coup n'est pas notre player
+  {
 	  coord.x=coup->x;
 	  coord.y=coup->y;
 	  if(coup->player ==player)
 	  {
 	      printf(" (%d;%d)", coord.x, coord.y);
-		  score+=2*evalcase_align(gamestate->coup, coord, player); //on aligne des pions, 2 points par pion aligné
+		  i=evalcase_align(gamestate->coup, coord, player);
+		  score+=2*i; //on aligne des pions, 2 points par pion aligné
+		  printf("%d:", i);
 		  score+=10*(fills_hole(gamestate->coup, coord, player)); //on remplit un xOxx adverse, 10x par remplissage
+	//	  printf("%d:", score);
 		  score+=30*(blocks_ennemy(gamestate->coup, coord, player));//on bloque une evolution vers un XXXX adverse, 10 points par blocage
+	//	  printf("%d:", score);
 		  score+=20*(prise_paire_adversaire(gamestate->coup, coord, player));//on prend une paire a l'adversaire, 15 points par prise
+	//	  printf("%d:", score);
 		  if(gamestate->paires[1] ==4)
 		  	score-=100*(prise_paire_adversaire(gamestate->coup, coord, !player));//il nous reste 1 paire a prendre avant de mourir, donc -100
 		  else
 		    score-=30*(prise_paire_adversaire(gamestate->coup, coord, !player));//on se fait manger une paire, pas intéressant donc -15 points
+	//	  printf("%d|", score);
 		  //score-=100*(get_maxalign_coord(coord, gamestate, !player) == 5);//l'adversaire aligne 5 pions => -80 pour cette position
-		  printf("=%d ", score);
 	  }
 	  coup = coup->next;
   }
+  printf(" ");
   score+=100*(get_maxalign_coord(coord, gamestate, player) == 5);//on réussit à aligner 5 pions => victoire, +100 points
-
   gamestate->value=/*best*/score;
 //  printf(" %d %d => %d\n", coord.x, coord.y, score);
   return(score);
@@ -42,46 +48,45 @@ int	evalcase_align(t_coup *coups, t_coord coord, char player)
   if(occupee(coups, coord)== NOPLAYER)
     return (0);
   if(coord.x<=DIM-6 && coord.x>=0)
-  {printf("\na");
-  tmp = eval_line(coups, coord, 1, 0, player);
+  {
+	 tmp = eval_line(coups, coord, 1, 0, player);
   	 score=MAX(score,tmp);
- }
+  }
   if(coord.y<=DIM-6 && coord.y>=0 && coord.x<=DIM-6 && coord.x>=0)
- {printf("\nb");
- tmp = eval_line(coups, coord, 1, 1, player);
- score=MAX(score,tmp);
- }
- if(coord.y<=DIM-6 && coord.y>=0)
- {printf("\nc");
- tmp = eval_line(coups, coord, 0, 1, player);
-	 score=MAX(score,tmp);
+  {
+ 	tmp = eval_line(coups, coord, 1, 1, player);
+ 	score=MAX(score,tmp);
+  }
+  if(coord.y<=DIM-6 && coord.y>=0)
+  {
+	tmp = eval_line(coups, coord, 0, 1, player);
+	score=MAX(score,tmp);
   }
   if(coord.y<=DIM-6 && coord.y>=0 && coord.x>=5 && coord.x<=DIM)
-	{printf("\nd");
-		tmp = eval_line(coups, coord, -1, 1, player);
-		score=MAX(score,tmp);
+  {
+	tmp = eval_line(coups, coord, -1, 1, player);
+	score=MAX(score,tmp);
   }
   if(coord.x>=5 && coord.x<=DIM)
-  {printf("\ne");
-  tmp = eval_line(coups, coord, -1, 0, player);
-	  score=MAX(score,tmp);
+  {
+    tmp = eval_line(coups, coord, -1, 0, player);
+	score=MAX(score,tmp);
   }
   if(coord.x>=5 && coord.x<=DIM && coord.y>=5 && coord.y<=DIM)
-  {printf("\nf");
-  tmp = eval_line(coups, coord, -1, -1, player);
-	  score=MAX(score,tmp);
+  {
+    tmp = eval_line(coups, coord, -1, -1, player);
+	score=MAX(score,tmp);
   }
   if(coord.y>=5 && coord.y<=DIM)
-	{printf("\ng");
+  {
 	tmp= eval_line(coups, coord, 0, -1, player);
-		score=MAX(score,tmp);
+	score=MAX(score,tmp);
   }
   if(coord.x<=DIM-5 && coord.x>=0 && coord.y>=5 && coord.y<=DIM)
-	{printf("\nh");
+  {
 	tmp = eval_line(coups, coord, 1, -1, player);
-		score=MAX(score,tmp);
-
-  }printf("=>%d;",score);
+	score=MAX(score,tmp);
+  }
   return(score);
 }
 

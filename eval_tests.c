@@ -67,7 +67,6 @@ int blocks_ennemy(t_coup *coups, t_coord coord, char player)
 	while(i<8)
 		free(tabs[i++]);
 //		return(nbre);
-printf("%d;", nbre);
 	if(nbre)
     {
 //  	  printf("ennemy blocked!:");displaymoves(coups);
@@ -109,13 +108,6 @@ int	fills_hole(t_coup *coups, t_coord coord, char player)
 	i=0;
 	while(i<8)
 	  free(tabs[i++]);
-//	if(nbre)
-//	{
-//	//	printf("on remplit un trou ennemi\n");
-//		return (1);
-//	}
-//	return(0);
-printf("%d;",nbre);
 	return(nbre);
 }
 // on voit si le coup a jouer correspond a: x?xx
