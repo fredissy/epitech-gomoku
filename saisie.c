@@ -37,11 +37,21 @@ int deal_keywords(t_coup *coups, char player, char *buffer)
 int saisie_ok(t_coup *coups, t_coord saisie, signed char player)
 {
 	if(saisie.x<0 || saisie.x>DIM || saisie.y<0 || saisie.y>DIM)
+	{
+		printf("Coup en dehors du plateau (%d,%d)!\n", DIM, DIM);
 		return (0);
+	}
 	if(occupee(coups, saisie) != -1)
+	{
+		printf("Il y a deja un pion sur cette case!\n");
 		return (0);
+	}
 	if(checkdoubletrois(coups, saisie, player))
+	{
+		printf("Double trois non autorisé!\n");
 		return(0);
+	}
+
 	return (1);
 }
 
@@ -64,8 +74,6 @@ int			checkdoubletrois(t_coup *coups, t_coord saisie, signed char player)
 	tabs[8] = 0;
 	while(i<8)
 		nbre+=is_doubletrois(tabs[i++], player);
-	if(nbre>1)
-		printf("/!\\ Double trois interdit!\n");
 	i=0;
 	while(i<8)
 		free(tabs[i++]);
