@@ -190,3 +190,10 @@ int	occupee(t_coup *orig, t_coord coord)
   return (NOPLAYER);
 }
 
+t_coord generatecoord(int x, int y)
+{
+	t_coord ret;
+	ret.x=x;
+	ret.y=y;
+	return(ret);
+}

@@ -100,9 +100,9 @@ int	dans(t_coup *orig, t_coord coord, signed char player)
 		if(orig->x == coord.x && orig->y == coord.y)
 		{
 			if(orig->player==player)
-	    		return(MOI);
+	    		return (MOI);
 	    	else
-	    		return(ADVERSAIRE);
+	    		return (ADVERSAIRE);
 		}
 	    orig=orig->next;
     }

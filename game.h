@@ -36,10 +36,10 @@ typedef struct s_coup
   struct s_coup	*next;
 } t_coup;
 
-typedef struct s_tab
-{
-  t_coup	t[DIM][DIM];
-} t_tab;
+//typedef struct s_tab
+//{
+//  t_coup	t[DIM][DIM];
+//} t_tab;
 
 typedef struct s_noeud
 {
@@ -83,13 +83,13 @@ t_noeud *MinMove(t_noeud *gamepos, int depth, char player, int alpha, int beta, 
 t_noeud	*GenerateMove(t_noeud *parent, int numerocas, int depth);
 t_noeud	**GenerateMoves(t_noeud *gamepos, int depth);
 t_dimensions	getdimensions(t_noeud *gamestate);
-int	Value(t_noeud *noeud);
-t_tab	*generatetable(t_coup *first);
-int	evalcase(t_tab *tab, int x, int y, char player);
-int	eval_line(t_tab *tab, int x, int y, signed int xm, signed int ym, char player);
+int		Value(t_noeud *noeud);
+//t_tab	*generatetable(t_coup *first);
+int		evalcase(t_coup *coups, int x, int y, char player);
+int	eval_line(t_coup *coups, t_coord coord, signed int xm, signed int ym, char player);
 void	displaymoves(t_coup *coup);
-int	x(t_noeud *noeud);
-int	y(t_noeud *noeud);
+int		x(t_noeud *noeud);
+int		y(t_noeud *noeud);
 void	removearbre(t_noeud *racine);
 void	removearbrecontent(t_noeud *racine);
 void	ajoutecoup(t_noeud *parent, t_coord, int player);
@@ -105,3 +105,4 @@ char	*buildchaine(t_coup *coups, int dx, int dy, t_coord coord, signed char play
 int		dans(t_coup *orig, t_coord coord, signed char player);
 int		checkdoubletrois(t_coup *coups, t_coord saisie, signed char player);
 int		is_doubletrois(char *chaine, signed char player);
+t_coord	generatecoord(int x, int y);
