@@ -6,9 +6,10 @@ t_coord	  MinMax(t_noeud *gamepos, int depth, char player, t_args args)
   t_coord toplay;
 
   i=MaxMove(gamepos, depth, player, 1000, 1000, args);
-  removearbre(gamepos);
+  printf ("=====%d====\n", i->deep);
   toplay.x=x(i);
   toplay.y=y(i);
+  removearbrecontent(i);
   return(toplay);
 }
 
@@ -35,7 +36,6 @@ t_noeud		*MaxMove(t_noeud *gamepos, int depth, char player, int alpha, int beta,
 	      printf("MAX:%d:%d\n", i, Value(curmove));
 	      displaymoves(curmove->coup);
 	    }
-	    //	    printf("[%d] (%d, %d)=>%d\n", i, x(curmove)/*moves[i])*/, y(curmove/*(moves[i]*/), Value(curmove));
 	  if(i==0)
 	    {
 	      bestmove=moves[i];
@@ -52,9 +52,6 @@ t_noeud		*MaxMove(t_noeud *gamepos, int depth, char player, int alpha, int beta,
 	      gamepos->value = Value(curmove);
 	      alpha = Value(curmove);
 	    }
-	  //	  removearbrecontent(curmove);
-	  //	  if(depth==MAXDEPTH)
-	  // printf("delete ok %d\n", i);
 	  if(alpha>beta)
 	    return (bestmove);
 	  i++;

@@ -51,7 +51,7 @@ t_dimensions getdimensions(t_noeud *gamestate)
     dim.height=DIM-dim.maxtop;
   else
     dim.height=dim.height+2*EXTRA;
-//   printf("DIM:x=%d, y=%d, width=%d, height=%d\n", dim.maxleft, dim.maxtop, dim.width, dim.height);
+  //   printf("DIM:x=%d, y=%d, width=%d, height=%d\n", dim.maxleft, dim.maxtop, dim.width, dim.height);
   return(dim);
 
 }
@@ -175,6 +175,8 @@ int	avant(t_coord *nouv, t_coup *orig)
 
 int	occupee(t_coup *orig, t_coord coord)
 {
+  if(coord.x==DIM+1 || coord.y ==DIM+1)
+    return (PLAYER1);
   while(orig)
     {
       //      printf("[%d;%d](%d;%d)\n", orig->x, orig->y, coord.x, coord.y);
@@ -191,20 +193,17 @@ int	occupee(t_coup *orig, t_coord coord)
 t_coord	saisie(signed char player, t_coup *coups)
 {
   t_coord saisie;
-  int	x = DIM + 1;
-  int	y = DIM + 1;
-
-  while(x<0 || x>DIM)
+  saisie.x = DIM + 1;
+  saisie.y = DIM + 1;
+  while((saisie.x<0 || saisie.x>DIM) && occupee(coups, saisie) != -1)
     {
       printf("joueur %d coord x? ", player+1);
-      scanf("%d", &x);
+      scanf("%d", &saisie.x);
     }
-  while(y<0 || y>DIM)
+  while((saisie.y<0 || saisie.y>DIM) && occupee(coups, saisie) != -1)
     {
       printf("joueur %d coord y? ", player+1);
-      scanf("%d", &y);
+      scanf("%d", &saisie.y);
     }
-  saisie.x = x;
-  saisie.y = y;
   return(saisie);
 }

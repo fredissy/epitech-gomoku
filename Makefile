@@ -16,7 +16,7 @@ $(NAME) : $(OBJ)
 	$(CC) -o $(NAME) $(OBJ)
 
 clean :
-	rm -f $(OBJ) *~
+	rm -f $(OBJ) *~ \#*
 
 fclean :
 	rm -f $(NAME)
