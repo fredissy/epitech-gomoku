@@ -64,11 +64,11 @@ int	evalcase(t_coup *coups, int x, int y, char player)
   return(score);
 }
 
-//principe: on remplit un tableau de 6 chars avec les 6 cases a analyser,
-// et on compte le score possible avec cette position, enfin on le renvoie.
+// principe: on remplit un tableau de 6 chars avec les 6 cases a analyser,
+// on compte le score possible avec cette position, enfin on le renvoie.
 int	eval_line(t_coup *coups, t_coord coord, signed int xm, signed int ym, char player)
 {
-  char	cells[6];
+  char	cells[9];
   int	i=0;
   char	player_2;
   int	score;
@@ -78,9 +78,10 @@ int	eval_line(t_coup *coups, t_coord coord, signed int xm, signed int ym, char p
   else
     player_2=PLAYER1;
   //on construit la ligne a inspecter
-  for(i=0;i<6;i++)
+  coord.x-=4*xm;
+  coord.y-=4*ym;
+  for(i=0;i<10;i++)
   {
-//  cells[i]=(&tab->t[x+(xm*i)][y+(ym*i)])->player;
 	cells[i] =occupee(coups, coord);
 	coord.x+=xm;
 	coord.y+=ym;

@@ -72,6 +72,12 @@ typedef struct s_args		//contient l'analyse des args
   int	debug;			//lancement en mode debug
 } t_args;
 
+typedef struct s_score
+{
+	int ownalign;
+	int advalign;
+} t_score;
+
 int	gameended(t_noeud *gamestate);
 int	evalnode(t_noeud *gamestate, char player, t_args args);
 char	occupant(t_coup *cellule);
