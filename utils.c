@@ -189,3 +189,19 @@ t_coord generatecoord(int x, int y)
 	ret.y=y;
 	return(ret);
 }
+
+int getcolnum(char col)
+{
+	if(col>='A' && col<='A'+DIM)
+		return(col-'A');
+	if(col>='a' && col<='a'+DIM)
+		return(col-'a');
+	return(-1);
+}
+
+char getcolletter(int col)
+{
+	if(col>DIM && col<0)
+	  return(-1);
+	return(col+'A');
+}

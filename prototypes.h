@@ -30,6 +30,8 @@ int			Value(t_noeud *noeud);
 char		*buildchaine(t_coup *coups, int dx, int dy, t_coord coord, signed char player, int size, int decalage);
 int			dans(t_coup *orig, t_coord coord, signed char player);
 t_coord		generatecoord(int x, int y);
+int getcolnum(char col);
+char getcolletter(int col);
 
 
 //minmax
