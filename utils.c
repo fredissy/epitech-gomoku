@@ -8,7 +8,7 @@ t_dimensions getdimensions(t_noeud *gamestate)
   signed int  	ymin=DIM;
   signed int	ymax=-1;
 
-  coup=gamestate->coup;
+  coup=gamestate->coup->next;
 /*   while(coup) */
 /*     { */
 /*       if(coup) */

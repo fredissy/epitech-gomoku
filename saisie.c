@@ -6,14 +6,17 @@ t_coord	saisie(signed char player, t_coup *coups)
 {
   t_coord saisie;
   char buffer[10]; //on passe par un buffer pour eventuellement reconnaitre autre chose que 2 coordonnees
+  int	flag=0;
   saisie.x = DIM + 1;
   saisie.y = DIM + 1;
-  while(!saisie_ok(coups, saisie, player))
+
+  while(!saisie_ok(coups, saisie, player, flag))
     {
-      printf("joueur %d coords x;y? ", player+1);
-      scanf("%s", (char*)&buffer);
-      if(!deal_keywords(coups, player, (char*)&buffer));
-        sscanf((char*)&buffer,"%u;%u", &saisie.x, &saisie.y);
+		flag++;
+		printf("joueur %d coords x;y? ", player+1);
+        scanf("%s", (char*)&buffer);
+        if(!deal_keywords(coups, player, (char*)&buffer));
+          sscanf((char*)&buffer,"%u;%u", &saisie.x, &saisie.y);
     }
   return (saisie);
 }
@@ -34,10 +37,11 @@ int deal_keywords(t_coup *coups, char player, char *buffer)
 }
 
 //valide la saisie du joueur
-int saisie_ok(t_coup *coups, t_coord saisie, signed char player)
+int saisie_ok(t_coup *coups, t_coord saisie, signed char player, int flag)
 {
 	if(saisie.x<0 || saisie.x>DIM || saisie.y<0 || saisie.y>DIM)
 	{
+		if(flag)
 		printf("Coup en dehors du plateau (%d,%d)!\n", DIM, DIM);
 		return (0);
 	}

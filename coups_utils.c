@@ -39,7 +39,6 @@ void removecoup(t_noeud *parent, t_coord coord)
 {
 	t_coup *prev;
 	t_coup *cur;
-	displaymoves(parent->coup);
 
 	prev=parent->coup;
 	cur = prev->next;

@@ -8,19 +8,19 @@ int evalnode(t_noeud *gamestate, char player, t_args args)
   t_coord coord;
   if(gamestate==0)
     return (0);
-  coup=gamestate->coup;
+  coup=gamestate->coup;//->next;//histoire de sauter le premier qui ne sert à rien
   while(coup)
   {//Faire un test comme quoi on n'évalue pas si le joueur du coup n'est pas notre player
 	  coord.x=coup->x;
 	  coord.y=coup->y;
 	  if(coup->player ==player)
 	  {
-		  score+=10*evalcase_align(gamestate->coup, coord, player); //on aligne des pions, 2 points par pion aligné
-		  score+=50*(fills_hole(gamestate->coup, coord, player)); //on remplit un xOxx adverse, 10x par remplissage
-		  score+=50*(blocks_ennemy(gamestate->coup, coord, player));//on bloque une evolution vers un XXXX adverse, 10 points par blocage
-		  score+=75*(prise_paire_adversaire(gamestate->coup, coord, player));//on prend une paire a l'adversaire, 15 points par prise
-		  score-=75*(prise_paire_adversaire(gamestate->coup, coord, !player));//on se fait manger une paire, pas intéressant donc -15 points
-		  score+=500*(get_maxalign_coord(coord, gamestate) == 5);//on réussit à aligner 5 pions => victoire, +100 points
+		  score+=2*evalcase_align(gamestate->coup, coord, player); //on aligne des pions, 2 points par pion aligné
+		  score+=10*(fills_hole(gamestate->coup, coord, player)); //on remplit un xOxx adverse, 10x par remplissage
+		  score+=10*(blocks_ennemy(gamestate->coup, coord, player));//on bloque une evolution vers un XXXX adverse, 10 points par blocage
+		  score+=15*(prise_paire_adversaire(gamestate->coup, coord, player));//on prend une paire a l'adversaire, 15 points par prise
+		  score-=10*(prise_paire_adversaire(gamestate->coup, coord, !player));//on se fait manger une paire, pas intéressant donc -15 points
+		  score+=100*(get_maxalign_coord(coord, gamestate) == 5);//on réussit à aligner 5 pions => victoire, +100 points
 		  gamestate->value=/*best*/score;
 	  }
 	  coup = coup->next;

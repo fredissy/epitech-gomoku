@@ -25,7 +25,7 @@ void	avance(t_dimensions *dim, t_coord *initial, int rang);
 int		occupee(t_coup *orig, t_coord coord);
 t_args	arguments(int ac, char **av);
 t_coord	saisie(signed char player, t_coup *coups);
-int		saisie_ok(t_coup *coups, t_coord saisie, signed char player);
+int		saisie_ok(t_coup *coups, t_coord saisie, signed char player, int flag);
 char	*buildchaine(t_coup *coups, int dx, int dy, t_coord coord, signed char player, int size, int decalage);
 int		dans(t_coup *orig, t_coord coord, signed char player);
 int		checkdoubletrois(t_coup *coups, t_coord saisie, signed char player);

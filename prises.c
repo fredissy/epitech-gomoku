@@ -90,6 +90,6 @@ void enlevepaire(t_noeud *jeu, t_coord coord, int sens, char player)
 		y=-1;
 	removecoup(jeu, generatecoord(coord.x+x, coord.y+y));
 	removecoup(jeu, generatecoord(coord.x+2*x, coord.y+2*y));
-	printf("Deux pions perdus pour le joueur %d!\n", (!player)+1);
+	printf("Deux pions perdus pour le joueur %d! (%d;%d) (%d;%d)\n", (!player)+1, coord.x+x, coord.y+y, coord.x+2*x, coord.y+2*y);
 	jeu->paires[!player]++;
 }
