@@ -217,3 +217,13 @@ t_coord generatecoord(int x, int y)
 	ret.y=y;
 	return(ret);
 }
+
+
+
+void printchaine(char *chaine, int len)
+{
+	int i = 0;
+	while(i<len)
+		printf("%c",chaine[i++]);
+	printf(" ");
+}
