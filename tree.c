@@ -39,12 +39,12 @@ t_noeud		*MaxMove(t_noeud *gamepos, int depth, char player, int alpha, int beta,
 	  t_noeud	*curmove;
 	  dim = getdimensions(gamepos);
   	  nbcas = dim.width * dim.height - nbpions(gamepos);
-      while(i<nbcas)
+      while((move = GenerateMove(gamepos, i, nbcas, depth - 1, dim))!= FINI)
       {
-	    move = GenerateMove(gamepos, i, depth - 1);
-//	    displaymoves(gamepos->coup);
-		if(nbvoisins(gamepos, generatecoord(move->x, move->y))!=0)
-		{
+		  if(move)
+		  {
+	   // move = GenerateMove(gamepos, i, depth - 1);
+	  //  displaymoves(gamepos->coup);
 	    curmove = MinMove(move, depth - 1, !player, alpha, beta, args);
 //	    printf("minmove ok\n");
 //	    displaymoves(curmove->coup);
@@ -74,7 +74,7 @@ t_noeud		*MaxMove(t_noeud *gamepos, int depth, char player, int alpha, int beta,
 	      }
 //	  if(alpha>beta)
 //	    return (bestmove);
-		}
+}
 	    free(move);
 	  i++;
 	}
@@ -105,12 +105,11 @@ t_noeud		*MinMove(t_noeud *gamepos, int depth, char player, int alpha, int beta,
 t_noeud	*curmove;
 	  dim = getdimensions(gamepos);
 	  nbcas = dim.width * dim.height - nbpions(gamepos);
-      while(i<nbcas)
+      while((move = GenerateMove(gamepos, i, nbcas, depth - 1, dim))!= FINI)
 	{
-		move = GenerateMove(gamepos, i, depth - 1);
-//		displaymoves(move->coup);
-		if(nbvoisins(gamepos, generatecoord(move->x, move->y))!=0)
+		if(move)
 		{
+		//displaymoves(move->coup);
     	curmove = MaxMove(move, depth - 1, !player, alpha, beta, args);
 	    if(depth==MAXDEPTH && args.debug==FULL_DEBUG)
 	    {

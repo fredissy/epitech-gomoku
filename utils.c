@@ -104,24 +104,15 @@ int y(t_noeud *noeud)
     return(noeud->y);
 }
 
-void	avance(t_dimensions *dim, t_coord *initial, int rang)
+void	avance(t_dimensions *dim, t_coord *initial)
 {
-  int	i;
-  i = 0;
-
-   while(i<rang)
-    while(initial->y <= dim->maxtop+dim->height && i < rang)
-      while(initial->x <= dim->maxleft+dim->width && i < rang)
-	{
-	  (initial->x)++;
-	  i++;
-	  if(initial->x==dim->maxleft+dim->width)
-	    {
-	      initial->x=dim->maxleft;
-	      initial->y++;
-	    }
-	}
-}
+	    (initial->x)++;
+	     if(initial->x==dim->maxleft+dim->width)
+	     {
+	        initial->x=dim->maxleft;
+	        initial->y++;
+	     }
+ }
 
 int	occupee(t_coup *orig, t_coord coord)
 {

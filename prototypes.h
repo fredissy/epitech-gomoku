@@ -38,7 +38,8 @@ int 		nbvoisins(t_noeud *jeu, t_coord coord);
 t_coord	MinMax(t_noeud *gamepos, int depth, char player, t_args args);
 t_noeud *MaxMove(t_noeud *gamepos, int depth, char player, int alpha, int beta, t_args args);
 t_noeud *MinMove(t_noeud *gamepos, int depth, char player, int alpha, int beta, t_args args);
-t_noeud	*GenerateMove(t_noeud *parent, int numerocas, int depth);
+t_noeud*GenerateMove(t_noeud *parent, int numerocas, int nbcas, int depth, t_dimensions dim);
+//t_noeud	*GenerateMove(t_noeud *parent, int numerocas, int depth);
 //t_noeud	**GenerateMoves(t_noeud *gamepos, int depth);
 
 //nettoyage memoire
@@ -56,7 +57,7 @@ void	delcoups(t_coup *todelete);
 //jeu en lui meme
 void	gameloop_1p();
 void	gameloop_2p();
-void	avance(t_dimensions *dim, t_coord *initial, int rang);
+void	avance(t_dimensions *dim, t_coord *initial);
 t_args	arguments(int ac, char **av);
 t_coord	saisie(signed char player, t_coup *coups);
 int		deal_keywords(t_coup *coups, char player, char *buffer);

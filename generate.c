@@ -1,9 +1,8 @@
 #include "game.h"
 
-t_noeud*GenerateMove(t_noeud *parent, int numerocas, int depth)
+t_noeud*GenerateMove(t_noeud *parent, int numerocas, int nbcas, int depth, t_dimensions dim)
 {
   t_noeud	*fils;
-  t_dimensions	dim;
   t_coup	*newcoup;
   t_coup	*prev;
   t_coup	*orig;
@@ -11,6 +10,32 @@ t_noeud*GenerateMove(t_noeud *parent, int numerocas, int depth)
   int		i = 0;
   int		x;
   int		y;
+//si on est arrivé au bout...
+  if(numerocas>=nbcas)
+    return(FINI);
+
+  x = dim.maxleft;
+  y = dim.maxtop;
+  coord.x = x;
+  coord.y = y;
+//  if(occupee(parent->coup, coord) != -1)
+//  i--;
+
+  while(i<numerocas)
+  {
+//printf("boucle %d sur %d\n",i, numerocas);
+	  avance(&dim, &coord);
+      if(occupee(parent->coup, coord) != -1)
+        i--;
+      i++;
+  }
+//    printf("gen:%d %d\n", coord.x, coord.y);
+//si les coordonnées générées n'ont pas de voisins dans les 2 cases autour...
+  if (nbvoisins(parent, coord)==0)
+  {
+	  printf("%d %d ignore %d\n", coord.x, coord.y, dim.maxtop);
+    return(NULL);
+}
 
   dim = getdimensions(parent);
   if((fils = malloc(sizeof(t_noeud))) == NULL)
@@ -46,19 +71,6 @@ t_noeud*GenerateMove(t_noeud *parent, int numerocas, int depth)
       prev=newcoup;
       orig=orig->next;
     }
-  x = dim.maxleft;
-  y = dim.maxtop;
-  coord.x = x;
-  coord.y = y;
-  if(occupee(parent->coup, coord) != -1)
-  i--;
-  while(i<numerocas)
-  {
-	  avance(&dim, &coord, 1);
-      if(occupee(parent->coup, coord) != -1)
-        i--;
-      i++;
-  }
 
   newcoup=malloc(sizeof(t_coup));
   newcoup->x=coord.x;
@@ -72,6 +84,5 @@ t_noeud*GenerateMove(t_noeud *parent, int numerocas, int depth)
   fils->x=coord.x;
   fils->y=coord.y;
   //fils->fils = 0;
- // printf("%d %d\n", coord.x, coord.y);
   return(fils);
 }

@@ -22,6 +22,9 @@
 //distance par rapport aux autres cases a laquelle une case ne sera pas evaluee
 #define TOLERANCE 2
 
+//dit si la génération des coups a fini
+#define FINI -1
+
 //taille du damier
 #define DIM 15
 
