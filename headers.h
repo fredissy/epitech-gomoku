@@ -44,3 +44,5 @@ t_coup *duplicate(t_coup *src);
 t_coup *copycoup(t_coup *src);
 void showhint(t_coup *coups, signed char player);
 void delcoups(t_coup *todelete);
+int	prise_paire_adversaire(t_coup *coups, t_coord coord, char player);
+int do_prend_paire(char *chaine);

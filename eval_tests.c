@@ -51,14 +51,14 @@ int blocks_ennemy(t_coup *coups, t_coord coord, char player)
 	char	*tabs[8];
 	int		nbre = 0;
 	int		i=0;
-	tabs[0] = buildchaine(coups, 1, 0, coord, player, 6, 0); //droite
-	tabs[1] = buildchaine(coups, 1, 1, coord, player, 6, 0); //bas droite
-	tabs[2] = buildchaine(coups, 0, 1, coord, player, 6, 0); //bas
-	tabs[3] = buildchaine(coups, -1, 1, coord, player, 6, 0); //bas gauche
-	tabs[4] = buildchaine(coups, -1, 0, coord, player, 6, 0); //gauche
-	tabs[5] = buildchaine(coups, -1, -1, coord, player, 6, 0); //haut gauche
-	tabs[6] = buildchaine(coups, 0, -1, coord, player, 6, 0); //haut
-	tabs[7] = buildchaine(coups, 1, -1, coord, player, 6, 0); //haut droite
+	tabs[0] = buildchaine(coups, 1, 0, coord, player, 7, 0); //droite
+	tabs[1] = buildchaine(coups, 1, 1, coord, player, 7, 0); //bas droite
+	tabs[2] = buildchaine(coups, 0, 1, coord, player, 7, 0); //bas
+	tabs[3] = buildchaine(coups, -1, 1, coord, player, 7, 0); //bas gauche
+	tabs[4] = buildchaine(coups, -1, 0, coord, player, 7, 0); //gauche
+	tabs[5] = buildchaine(coups, -1, -1, coord, player, 7, 0); //haut gauche
+	tabs[6] = buildchaine(coups, 0, -1, coord, player, 7, 0); //haut
+	tabs[7] = buildchaine(coups, 1, -1, coord, player, 7, 0); //haut droite
 	tabs[8] = 0;
 
 	while(i<8)
@@ -66,12 +66,13 @@ int blocks_ennemy(t_coup *coups, t_coord coord, char player)
 	i=0;
 	while(i<8)
 		free(tabs[i++]);
-	if(nbre)
-    {
+		return(nbre);
+//	if(nbre)
+//    {
 //  	  printf("ennemy blocked!:");displaymoves(coups);
-	  return(1);
-    }
-	return (0);
+//	  return(1);
+//    }
+//	return (0);
 }
 
 int does_block_ennemy(char *chaine)
@@ -107,12 +108,13 @@ int	fills_hole(t_coup *coups, t_coord coord, char player)
 	i=0;
 	while(i<8)
 	  free(tabs[i++]);
-	if(nbre)
-	{
-	//	printf("on remplit un trou ennemi\n");
-		return (1);
-	}
-	return(0);
+//	if(nbre)
+//	{
+//	//	printf("on remplit un trou ennemi\n");
+//		return (1);
+//	}
+//	return(0);
+	return(nbre);
 }
 // on voit si le coup a jouer correspond a: x?xx
 int does_fill_hole(char *chaine)

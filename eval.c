@@ -15,15 +15,12 @@ int evalnode(t_noeud *gamestate, char player, t_args args)
 	  coord.y=coup->y;
 	  if(coup->player ==player)
 	  {
-		  score += 3*evalcase_align(gamestate->coup, coord, player);
-		  if(fills_hole(gamestate->coup, coord, player))
-			score+=10;
-		  if(blocks_ennemy(gamestate->coup, coord, player)==1)
-			score+=10;
-		  if(blocks_ennemy(gamestate->coup, coord, player)==1)
-			score+=30;
-		  if(get_maxalign_coord(coord, gamestate) == 5)
-			score+=20;
+		  score+=2*evalcase_align(gamestate->coup, coord, player); //on aligne des pions, 2 points par pion aligné
+		  score+=10*(fills_hole(gamestate->coup, coord, player)); //on remplit un xOxx adverse, 10x par remplissage
+		  score+=10*(blocks_ennemy(gamestate->coup, coord, player));//on bloque une evolution vers un XXXX adverse, 10 points par blocage
+		  score+=15*(prise_paire_adversaire(gamestate->coup, coord, player));//on prend une paire a l'adversaire, 15 points par prise
+		  score-=15*(prise_paire_adversaire(gamestate->coup, coord, !player));//on se fait manger une paire, pas intéressant donc -15 points
+		  score+=100*(get_maxalign_coord(coord, gamestate) == 5);//on réussit à aligner 5 pions => victoire, +100 points
 		  gamestate->value=/*best*/score;
 	  }
 	  coup = coup->next;
@@ -32,38 +29,9 @@ int evalnode(t_noeud *gamestate, char player, t_args args)
   return(score);
 }
 
-/*
-int evalnode(t_noeud *gamestate, char player, t_args args)
-{
-  int	bestscore=0;
-  int	score=0;
-  t_coup	*coup;
-  t_coord coord;
-  if(gamestate==0)
-    return (0);
-  coup=gamestate->coup;
-  coord.x=gamestate->x;
-  coord.y=gamestate->y;
-  score = evalcase_align(gamestate->coup, coord, player);
-  bestscore = MAX(score, bestscore);
-  if(score==0)
-    return(0);
-  if(blocks_ennemy(gamestate->coup, coord, player)||fills_hole(gamestate->coup, coord, player))
-    score=10;
-  bestscore = MAX(score, bestscore);
-
-  if(get_maxalign_coord(coord, gamestate) == 5)
-  	score=20;
-  bestscore = MAX(score, bestscore);
-  gamestate->value=bestscore;
-
-  return(bestscore);
-}
-*/
 int	evalcase_align(t_coup *coups, t_coord coord, char player)
 {
   int	score=0;
-//  int tmpscore=0;
 
   if(occupee(coups, coord)== NOPLAYER)
     return (0);
