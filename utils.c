@@ -155,15 +155,40 @@ t_coord generatecoord(int x, int y)
 	ret.y=y;
 	return(ret);
 }
-
+int nbvoisins(t_noeud *jeu, t_coord coord)
+{
+	int x, y;
+	t_coup *coup;
+	x = coord.x;
+	y = coord.y;
+	coup = jeu->coup->next;
+	while(coup)
+	{
+		if((coup->x == x-2 ||coup->x == x+2||coup->x==x) &&
+		   (coup->y == y-2 ||coup->y == y+2||coup->y==y) &&
+		   !(coup->x == x && coup->y == y))
+			   return (1);
+		if(((coup->x >= x-1 && coup->x <= x+1) &&
+		   (coup->y >= y-1 && coup->y <= y+1)) && !(coup->x == x && coup->y == y))
+			return (1);
+		coup = coup->next;
+	}
+	return(0);
+}
+/*
 int nbvoisins(t_noeud *jeu, t_coord coord)
 {
 	int x, y;
 	int nbre=0;
-
 	for(y=coord.y-2;y<coord.y+2;y++)
 	  for(x=coord.y-2; x<coord.x+2;x++)
+	  {printf(".");
 	    if(occupee(jeu->coup, generatecoord(x,y)) != NOPLAYER && (x||y))
-	      nbre++;
+	      {
+			printf("%d %d occupee\n", x, y);
+		    nbre++;
+	      }
+	  }
+	  printf("/");
 	return (nbre);
-}
+}*/

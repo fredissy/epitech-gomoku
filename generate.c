@@ -10,33 +10,32 @@ t_noeud*GenerateMove(t_noeud *parent, int numerocas, int nbcas, int depth, t_dim
   int		i = 0;
   int		x;
   int		y;
-//si on est arrivé au bout...
+  //si on est arrivé au bout...
   if(numerocas>=nbcas)
     return(FINI);
-
   x = dim.maxleft;
   y = dim.maxtop;
   coord.x = x;
   coord.y = y;
-//  if(occupee(parent->coup, coord) != -1)
-//  i--;
+  //  if(occupee(parent->coup, coord) != -1)
+  //  i--;
 
   while(i<numerocas)
-  {
-//printf("boucle %d sur %d\n",i, numerocas);
-	  avance(&dim, &coord);
+    {
+      //printf("boucle %d sur %d\n",i, numerocas);
+      avance(&dim, &coord);
       if(occupee(parent->coup, coord) != -1)
         i--;
       i++;
-  }
-//    printf("gen:%d %d\n", coord.x, coord.y);
-//si les coordonnées générées n'ont pas de voisins dans les 2 cases autour...
-  if (nbvoisins(parent, coord)==0)
-  {
-	  printf("%d %d ignore %d\n", coord.x, coord.y, dim.maxtop);
-    return(NULL);
-}
-
+    }
+  //printf("---\ngen:%d %d:\n", coord.x, coord.y);
+  //si les coordonnées générées n'ont pas de voisins dans les 2 cases autour...
+  if (!nbvoisins(parent, coord))
+    {
+//      printf("(%d;%d)", coord.x, coord.y);
+      return(NULL);
+    }
+  //printf("=>ok\n");
   dim = getdimensions(parent);
   if((fils = malloc(sizeof(t_noeud))) == NULL)
     {
