@@ -29,6 +29,7 @@ void		gameloop_1p(t_args args)
       ajoutecoup(jeu, toplay, PLAYER2);
       if(args.debug==RUN_DEBUG||args.debug==FULL_DEBUG)
 	    displaymoves(jeu->coup);
+	  //showgrid(jeu);
 	  gagne=gameended(jeu);
     }
 }

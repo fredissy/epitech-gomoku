@@ -12,21 +12,23 @@ int evalnode(t_noeud *gamestate, char player, t_args args)
 
   if(gamestate==0)
     return (0);
-
+  printf("eval(%d,%d)", coord.x, coord.y);
   score = evalcase_align(gamestate->coup, coord, player);
   bestscore = MAX(score, bestscore);
-
+  printf(".");
   if(score==0)
   	  return(0);
 
   if(blocks_ennemy(gamestate->coup, coord, player)|| blocks_hole(gamestate->coup, coord, player))
     score=10;
   bestscore = MAX(score, bestscore);
-
+  printf(".");
   if(get_maxalign_coord(coord, gamestate) == 5)
   	score=20;
   bestscore = MAX(score, bestscore);
-
+    printf(".ok\n");
+//  if(checkdoubletrois(gamestate->coup, coord, player))
+//    bestscore= 0;
   gamestate->value=bestscore;
   return(bestscore);
 }

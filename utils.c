@@ -105,17 +105,6 @@ int y(t_noeud *noeud)
 }
 
 
-void	displaymoves(t_coup *coup)
-{
-  printf("> ");
-  while(coup)
-    {
-      printf("(%d;%d|%d)",coup->x, coup->y, coup->player);
-      coup=coup->next;
-    }
-  printf("\n");
-}
-
 void	ajoutecoup(t_noeud *parent, t_coord coord, int player)
 {
   t_coup	*prev;
@@ -216,14 +205,4 @@ t_coord generatecoord(int x, int y)
 	ret.x=x;
 	ret.y=y;
 	return(ret);
-}
-
-
-
-void printchaine(char *chaine, int len)
-{
-	int i = 0;
-	while(i<len)
-		printf("%c",chaine[i++]);
-	printf(" ");
 }

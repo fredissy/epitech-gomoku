@@ -7,8 +7,7 @@ t_coord	  MinMax(t_noeud *gamepos, int depth, char player, t_args args)
   i=MaxMove(gamepos, depth, player, 1000, 1000, args);
   toplay.x=x(i);
   toplay.y=y(i);
-  printf("   "); displaymoves(i->coup);
-  //  removearbrecontent(i);
+free(i);
   return(toplay);
 }
 
@@ -46,8 +45,7 @@ t_noeud		*MaxMove(t_noeud *gamepos, int depth, char player, int alpha, int beta,
 	    if(depth==MAXDEPTH && args.debug==FULL_DEBUG)
 	      {
 	        printf("MAX(%d/%d):%d\n--\n", i, nbcas, Value(curmove));
-	    //    displaymoves(curmove->coup);
-
+	        displaymoves(curmove->coup);
 	      }
 	    if(i==0)
 	      {
