@@ -19,10 +19,13 @@ t_noeud		*MaxMove(t_noeud *gamepos, int depth, char player, int alpha, int beta,
   t_noeud   *move;
   t_dimensions dim;
   int		i=0;
-
   int		nbcas;
-  bestmove = malloc(sizeof(t_noeud));
-  if(gameended(gamepos)||depth==0)
+  if((bestmove = malloc(sizeof(t_noeud)))==NULL)
+  {
+	  printf("Could not malloc (4)\n");
+  }
+
+  if(/*gameended(gamepos)||*/depth==0)
     {
 	//  printf("DEPTH=0 %d\n", PLAYER2);
       evalnode(gamepos, PLAYER2, args);
@@ -48,8 +51,6 @@ t_noeud		*MaxMove(t_noeud *gamepos, int depth, char player, int alpha, int beta,
 	      }
 	    if(i==0)
 	      {
-//			bestmove->x=move->x;
-//			bestmove->y=move->y;
 			bcopy(move, bestmove, sizeof(t_noeud));
 	        bestmove->value = Value(curmove);
 	        gamepos->value = Value(curmove);
@@ -78,15 +79,16 @@ t_noeud		*MaxMove(t_noeud *gamepos, int depth, char player, int alpha, int beta,
 t_noeud		*MinMove(t_noeud *gamepos, int depth, char player, int alpha, int beta, t_args args)
 {
   t_noeud	*bestmove;
-  t_noeud	*curmove;
   t_noeud *move;
   t_dimensions dim;
   int		i = 0;
   int nbcas;
-    bestmove = malloc(sizeof(t_noeud));
-  if(gameended(gamepos)||depth==0)
+  if((bestmove = malloc(sizeof(t_noeud)))==NULL)
+  {
+  	  printf("Could not malloc (4)\n");
+  }
+  if(/*gameended(gamepos)||*/depth==0)
     {
-	//	printf("depth=0\n");
       //evalnode(gamepos, player, args);
       evalnode(gamepos, PLAYER2, args);
       return(gamepos);
@@ -99,12 +101,13 @@ t_noeud		*MinMove(t_noeud *gamepos, int depth, char player, int alpha, int beta,
 	{
 		move = GenerateMove(gamepos, i, depth - 1);
 //		displaymoves(move->coup);
+		t_noeud	*curmove;
     	curmove = MaxMove(move, depth - 1, !player, alpha, beta, args);
-	  //  if(depth==MAXDEPTH && args.debug==FULL_DEBUG)
-	  //  {
-	      printf("\n--min:%d:%d ", Value(curmove), Value(bestmove));
+	    if(depth==MAXDEPTH && args.debug==FULL_DEBUG)
+	    {
+	      printf("min(%d;%d):%d ", i,nbcas,Value(curmove));
 	      displaymoves(curmove->coup);
-	  //  }
+	    }
 	    if(i==0)
 	      {
    			bcopy(move, bestmove, sizeof(t_noeud));
@@ -112,7 +115,7 @@ t_noeud		*MinMove(t_noeud *gamepos, int depth, char player, int alpha, int beta,
 	        bestmove->value = Value(curmove);
 	    //  beta=Value(curmove);
 	    }
-	  if(Value(curmove)<Value(bestmove))
+	  if((30-Value(curmove))<(30-Value(bestmove)))
 	    {
 			bcopy(move, bestmove, sizeof(t_noeud));
 	        bestmove->value = Value(curmove);

@@ -52,7 +52,7 @@ void	gameloop_2p(t_args args)
       //displaymoves(jeu->coup);
       //if((gagne=evalnode(jeu, PLAYER2, args))>=5)
 	//printf("Joueur 2 a gagne!\n");
-    evalnode(jeu, PLAYER2, args);
+    //evalnode(jeu, PLAYER2, args);
     //  gagne = gameended(jeu);
     }
 }

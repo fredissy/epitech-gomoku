@@ -2,23 +2,13 @@
 
 int evalnode(t_noeud *gamestate, char player, t_args args)
 {
-//  t_tab	*tab;
-  //int	x;
-  //int	y;
   int	bestscore=0;
   int	score=0;
-  t_dimensions	dim;
   t_coup	*coup;
   t_coord coord;
-
-//  player=gamestate->player;
   if(gamestate==0)
     return (0);
   coup=gamestate->coup;
-  dim=getdimensions(gamestate);
-//  tab=generatetable(gamestate->coup);
-  //x=dim.maxleft;
-  //y=dim.maxtop;
   while(coup)
     {
 		if(coup->player==player)
@@ -26,22 +16,22 @@ int evalnode(t_noeud *gamestate, char player, t_args args)
 			coord.x=coup->x;
 			coord.y=coup->y;
 			score = evalcase_align(gamestate->coup, coord, player);
-			if(blocks_ennemy(gamestate->coup, coord, player))
-				score=10;
       		if(score==0)
       			return(0);
       		bestscore = MAX(score, bestscore);
 		}
 		coup = coup->next;
     }
-
-//  if(args.debug==FULL_DEBUG)
-//    {
-	//	displaymoves(gamestate->coup);
-	//	printf("eval=>%d(P%d)\n", bestscore, player+1);
-//    }
+ // printf("align maxi=%d\n", bestscore);
+  coord.x=gamestate->x;
+  coord.y=gamestate->y;
+  if(blocks_ennemy(gamestate->coup, coord, player))
+    score=10;
+  bestscore = MAX(score, bestscore);
+  //printf("MAXALIGN=%d\n", get_maxalign(gamestate->coup, gamestate));
+  if(get_maxalign(gamestate->coup, gamestate) == 5)
+  	score=20;
   gamestate->value=bestscore;
-  //free(tab);
   return(bestscore);
 }
 
@@ -226,7 +216,7 @@ int blocks_ennemy(t_coup *coups, t_coord coord, char player)
 		free(tabs[i++]);
 	if(nbre)
 {
-	printf("ennemy blocked!\n");
+	printf("ennemy blocked!:");displaymoves(coups);
 	return(1);
 }
 	return (0);
@@ -265,5 +255,56 @@ char		*buildchaine2(t_coup *coups, int dx, int dy, t_coord coord, signed char pl
 
 int gameended(t_noeud *gamestate)
 {
-  return(gamestate->value>=5);
+	t_coup *coup;
+	int	nbalign=0;
+	coup = gamestate->coup;
+	while(coup && nbalign <5)
+	{
+		nbalign=get_maxalign(coup, gamestate);
+		coup = coup->next;
+	}
+	return(nbalign==5);
+}
+
+int get_maxalign(t_coup *tocheck, t_noeud *gamestate)
+{
+	t_coup *coups;
+	t_coord coord;
+	char	*tabs[8];
+	int		nbre = 0;
+	int		bestnbre=0;
+	int		i=0;
+	coord.x=gamestate->x;
+	coord.y=gamestate->y;
+	coups = gamestate->coup;
+
+	tabs[0] = buildchaine2(coups, 1, 0, coord, PLAYER1, 5); //droite
+	tabs[1] = buildchaine2(coups, 1, 1, coord, PLAYER1, 5); //bas droite
+	tabs[2] = buildchaine2(coups, 0, 1, coord, PLAYER1, 5); //bas
+	tabs[3] = buildchaine2(coups, -1, 1, coord, PLAYER1, 5); //bas gauche
+	tabs[4] = buildchaine2(coups, -1, 0, coord, PLAYER1, 5); //gauche
+	tabs[5] = buildchaine2(coups, -1, -1, coord, PLAYER1, 5); //haut gauche
+	tabs[6] = buildchaine2(coups, 0, -1, coord, PLAYER1, 5); //haut
+	tabs[7] = buildchaine2(coups, 1, -1, coord, PLAYER1, 5); //haut droite
+	tabs[8] = 0;
+
+	while(i<8)
+	{
+		nbre = checkstring_for_victory(tabs[i++]);
+		bestnbre=MAX(nbre, bestnbre);
+	}
+	i=0;
+	while(i<8)
+		free(tabs[i++]);
+//	if(nbre)
+      return(bestnbre);
+}
+
+
+int checkstring_for_victory(char *chaine)
+{
+	int i=0;
+	while(chaine[i]==chaine[0])
+	  i++;
+	return (i);
 }

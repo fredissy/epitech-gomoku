@@ -24,7 +24,7 @@
 #define MAX(x,y) ((x)>(y)?(x):(y))
 #define MIN(x,y) ((x)<(y)?(x):(y))
 
-//pour la recherche du double trois
+//pour les comparaisons
 #define MOI '1'
 #define ADVERSAIRE '2'
 #define PERSONNE '0'
@@ -117,3 +117,5 @@ t_coord	generatecoord(int x, int y);
 int	occupee2(t_coup *orig, t_coord coord);
 int blocks_ennemy(t_coup *coups, t_coord coord, char player);
 int does_block_ennemy(char *chaine, signed char player);
+int get_maxalign(t_coup *tocheck, t_noeud *gamestate);
+int checkstring_for_victory(char *chaine);
