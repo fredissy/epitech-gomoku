@@ -20,47 +20,6 @@ t_coord	saisie(signed char player, t_coup *coups)
   return (saisie);
 }
 
-/*
-t_coord	saisie(signed char player, t_coup *coups)
-{
-  t_coord	saisie;
-  int		help = 0;
-  char entree[MAXLENGTH];
-  saisie.x = DIM + 1;
-  saisie.y = DIM + 1;
-  while(!saisie_ok(coups, saisie, player))
-    {
-      printf("joueur %d coord x? ", player+1);
-      fgets((char*)&entree, MAXLENGTH, stdin);
-      getc(stdin);
-	  if(entree[0] == 'h' || entree[0]=='H')
-	  {
-		  help++;
-		  saisie.x = DIM+1;
-	  }
-	  else
-	  	saisie.x = atoi((char*)&entree);
-	  entree[0]=0;
-      printf("joueur %d coord y? ", player+1);
-      fgets((char*)&entree, MAXLENGTH, stdin);
-      getc(stdin);
-	  if(entree[0] == 'h' || entree[0]=='H')
-	  {
-		  help++;
-		  saisie.y = DIM+1;
-	  }
-	  else
-	  	saisie.y = atoi((char*)&entree);
-
-      if(help==2)
-      	showhint(coups, player);
-
-    }
-  return (saisie);
-}
-
-*/
-
 //valide la saisie du joueur
 int saisie_ok(t_coup *coups, t_coord saisie, signed char player)
 {
@@ -117,7 +76,7 @@ int		is_doubletrois(char *chaine, signed char player)
 }
 
 /* Construit et renvoie une chaine
-** pour la recherche des doubles trois
+** de position
 */
 char		*buildchaine(t_coup *coups, int dx, int dy, t_coord coord, signed char player, int len, int decalage)
 {
