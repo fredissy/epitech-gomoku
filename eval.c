@@ -16,7 +16,7 @@ int evalnode(t_noeud *gamestate, char player, t_args args)
 	  {
 		  score+=2*evalcase_align(gamestate->coup, coord, player); //on aligne des pions, 2 points par pion aligné
 		  score+=10*(fills_hole(gamestate->coup, coord, player)); //on remplit un xOxx adverse, 10x par remplissage
-		  score+=25*(blocks_ennemy(gamestate->coup, coord, player));//on bloque une evolution vers un XXXX adverse, 10 points par blocage
+		  score+=10*(blocks_ennemy(gamestate->coup, coord, player));//on bloque une evolution vers un XXXX adverse, 10 points par blocage
 		  score+=15*(prise_paire_adversaire(gamestate->coup, coord, player));//on prend une paire a l'adversaire, 15 points par prise
 		  score-=10*(prise_paire_adversaire(gamestate->coup, coord, !player));//on se fait manger une paire, pas intéressant donc -15 points
 		  score+=100*(get_maxalign_coord(coord, gamestate, player) == 5);//on réussit à aligner 5 pions => victoire, +100 points
