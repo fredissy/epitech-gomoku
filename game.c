@@ -43,15 +43,19 @@ void	gameloop_2p(t_args args)
   t_coord	toplay;
   jeu = malloc(sizeof(t_noeud));
   jeu->coup=0;
+  jeu->player = PLAYER1;
   while(!gagne)
     {
       toplay=saisie(PLAYER1, jeu->coup);
       ajoutecoup(jeu, toplay, PLAYER1);
-      jeu->player = PLAYER1;
+      dealprises(jeu, toplay, PLAYER1);
+      showgrid(jeu);
       toplay = saisie(PLAYER2, jeu->coup);
       ajoutecoup(jeu, toplay, PLAYER2);
+      dealprises(jeu, toplay, PLAYER2);
 	  gagne = gameended(jeu);
-	  displaymoves(jeu->coup);
+	  showgrid(jeu);
+	  //displaymoves(jeu->coup);
     }
     printf("fini!\n");
 }

@@ -68,7 +68,7 @@ void	dealprises(t_noeud *jeu, t_coord coord, char player)
 	while(i<8)
 	{
 	  if(do_prend_paire(tabs[i]))
-	  	enlevepaire(jeu, coord, i);
+	  	enlevepaire(jeu, coord, i, player);
 	  i++;
     }
 	i=0;
@@ -76,7 +76,7 @@ void	dealprises(t_noeud *jeu, t_coord coord, char player)
 	  free(tabs[i++]);
 }
 
-void enlevepaire(t_noeud *jeu, t_coord coord, int sens)
+void enlevepaire(t_noeud *jeu, t_coord coord, int sens, char player)
 {
 	int x = 0;
 	int y = 0;
@@ -90,4 +90,5 @@ void enlevepaire(t_noeud *jeu, t_coord coord, int sens)
 		y=-1;
 	removecoup(jeu, generatecoord(coord.x+x, coord.y+y));
 	removecoup(jeu, generatecoord(coord.x+2*x, coord.y+2*y));
+	printf("Paire perdue pour le joueur %d!\n", (!player)+1);
 }

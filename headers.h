@@ -48,4 +48,4 @@ void delcoups(t_coup *todelete);
 int	prise_paire_adversaire(t_coup *coups, t_coord coord, char player);
 int do_prend_paire(char *chaine);
 void	dealprises(t_noeud *jeu, t_coord coord, char player);
-void enlevepaire(t_noeud *jeu, t_coord coord, int sens);
+void enlevepaire(t_noeud *jeu, t_coord coord, int sens, char player);
