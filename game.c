@@ -18,21 +18,22 @@ void		gameloop_1p(t_args args)
   int		gagne = 0;
   t_noeud	*jeu;
   t_coord	toplay;
+  jeu->coup=0;
   jeu = malloc(sizeof(t_noeud));
   while(!gagne)
     {
-      toplay=saisie(PLAYER1);
+      toplay=saisie(PLAYER1, jeu->coup);
       ajoutecoup(jeu, toplay, PLAYER1);
       jeu->player = PLAYER1;
-      if(evalnode(jeu, PLAYER1)==5)
+      if(evalnode(jeu, PLAYER1, args)==5)
 	printf("Joueur 1 a gagne!\n");
-      toplay = MinMax(jeu, MAXDEPTH, PLAYER1);
-      if(args.debug==RUN_DEBUG)
+      toplay = MinMax(jeu, MAXDEPTH, PLAYER1, args);
+      if(args.debug==RUN_DEBUG||args.debug==FULL_DEBUG)
 	printf("ordi joue sur:(%d;%d)\n",toplay.x, toplay.y);
       ajoutecoup(jeu, toplay, PLAYER2);
-      if(args.debug==RUN_DEBUG)
+      //      if(args.debug==RUN_DEBUG||args.debug==FULL_DEBUG)
 	displaymoves(jeu->coup);
-      if(evalnode(jeu, PLAYER2)==5)
+      if(evalnode(jeu, PLAYER2, args)==5)
 	printf("Joueur 2 a gagne!\n");
       gagne = gameended(jeu);
       }
@@ -48,14 +49,14 @@ void	gameloop_2p(t_args args)
     {
       toplay=saisie(PLAYER1);
       ajoutecoup(jeu, toplay, PLAYER1);
-      if(evalnode(jeu, PLAYER1)==5)
+      if(evalnode(jeu, PLAYER1, args)==5)
 	printf("Joueur 1 a gagne!\n");
       jeu->player = PLAYER1;
       toplay = saisie(PLAYER2);
       ajoutecoup(jeu, toplay, PLAYER2);
-      if(args.debug==RUN_DEBUG)
-	displaymoves(jeu->coup);
-      if(evalnode(jeu, PLAYER2)==5)
+      //      if(args.debug==RUN_DEBUG)
+      displaymoves(jeu->coup);
+      if(evalnode(jeu, PLAYER2, args)==5)
 	printf("Joueur 2 a gagne!\n");
 
       gagne = gameended(jeu);
@@ -68,14 +69,17 @@ t_args arguments(int ac, char **av)
   int	opt;
   args.players=0;
   args.debug=0;
-  while((opt = getopt(ac, av, "dm")) != -1)
+  while((opt = getopt(ac, av, "dDm")) != -1)
     {
       args.players = (opt=='m'?args.players+DEUXJOUEURS:args.players);
       args.debug=(opt=='d'?args.debug+RUN_DEBUG:args.debug);
+      args.debug=(opt=='D'?FULL_DEBUG:args.debug);
     }
   if(args.players==DEUXJOUEURS)
     printf("2-player mode\n");
-  if(args.debug)
-    printf("Running debug mode\n");
+  if(args.debug==RUN_DEBUG)
+    printf("Running display mode\n");
+  if(args.debug==FULL_DEBUG)
+    printf("Running FULL debug mode\n");
   return(args);
 }

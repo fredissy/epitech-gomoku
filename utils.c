@@ -188,7 +188,7 @@ int	occupee(t_coup *orig, t_coord coord)
   return (NOPLAYER);
 }
 
-t_coord	saisie(signed char player)
+t_coord	saisie(signed char player, t_coup *coups)
 {
   t_coord saisie;
   int	x = DIM + 1;

@@ -1,6 +1,6 @@
 #include "game.h"
 
-int evalnode(t_noeud *gamestate, char player)
+int evalnode(t_noeud *gamestate, char player, t_args args)
 {
   t_tab	*tab;
   int	x;
@@ -8,27 +8,43 @@ int evalnode(t_noeud *gamestate, char player)
   int	bestscore=0;
   int	score=0;
   t_dimensions	dim;
+  t_coup	*coup;
   player=gamestate->player;
+
   if(gamestate==0)
     return (0);
+  coup=gamestate->coup;
   dim=getdimensions(gamestate);
   tab=generatetable(gamestate->coup);
   x=dim.maxleft;
   y=dim.maxtop;
 
-  while(y<dim.maxleft+dim.width)
+  while(coup)
     {
-      x=dim.maxleft;
-      while(x<dim.maxtop+dim.height)
-	{
-	  score=evalcase(tab, x, y, player);
-	  if(score>bestscore)
-	    bestscore=score;
-	  x++;
-	}
-      y++;
+      score = evalcase(tab, coup->x, coup->y, player);
+      bestscore = MAX(score, bestscore);
+      coup = coup->next;
     }
-  printf("%d\n", bestscore);
+
+
+/*   while(y<dim.maxleft+dim.width) */
+/*     { */
+/*       x=dim.maxleft; */
+/*       while(x<dim.maxtop+dim.height) */
+/* 	{ */
+/* 	  score=evalcase(tab, x, y, player); */
+/* 	  if(score>bestscore) */
+/* 	    bestscore=score; */
+/* 	  x++; */
+/* 	} */
+/*       y++; */
+/*     } */
+  if(args.debug==FULL_DEBUG)
+    {
+      displaymoves(gamestate->coup);
+      printf("=>%d\n", bestscore);
+    }
+  //  printf("%d\n", bestscore);
   gamestate->value=bestscore;
   free(tab);
   return(bestscore);

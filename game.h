@@ -9,6 +9,7 @@
 #define UNJOUEUR 0
 #define DEUXJOUEURS 1
 #define RUN_DEBUG 1
+#define FULL_DEBUG 2
 
 #define FREE 0
 #define DIM 19
@@ -64,13 +65,12 @@ typedef struct s_args		//contient l'analyse des args
 } t_args;
 
 int	gameended(t_noeud *gamestate);
-int	evalnode(t_noeud *gamestate, char player);
+int	evalnode(t_noeud *gamestate, char player, t_args args);
 char	occupant(t_coup *cellule);
 int	nbpions(t_noeud *gamepos);
-
-t_coord	MinMax(t_noeud *gamepos, int depth, char player);
-t_noeud *MaxMove(t_noeud *gamepos, int depth, char player, int alpha, int beta);
-t_noeud *MinMove(t_noeud *gamepos, int depth, char player, int alpha, int beta);
+t_coord	MinMax(t_noeud *gamepos, int depth, char player, t_args args);
+t_noeud *MaxMove(t_noeud *gamepos, int depth, char player, int alpha, int beta, t_args args);
+t_noeud *MinMove(t_noeud *gamepos, int depth, char player, int alpha, int beta, t_args args);
 
 t_noeud	*GenerateMove(t_noeud *parent, int numerocas, int depth);
 t_noeud	**GenerateMoves(t_noeud *gamepos, int depth);
@@ -91,4 +91,4 @@ void	avance(t_dimensions *dim, t_coord *initial, int rang);
 int	avant(t_coord *nouv, t_coup *orig);
 int	occupee(t_coup *orig, t_coord coord);
 t_args	arguments(int ac, char **av);
-t_coord	saisie(signed char player);
+t_coord	saisie(signed char player, t_coup *coups);
