@@ -5,7 +5,7 @@ void printchaine(char *chaine, int len)
 	int i = 0;
 	while(i<len)
 		printf("%c",chaine[i++]);
-	printf(" ");
+	//printf(" ");
 }
 
 

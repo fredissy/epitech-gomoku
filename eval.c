@@ -156,7 +156,7 @@ int blocks_ennemy(t_coup *coups, t_coord coord, char player)
 	tabs[8] = 0;
 
 	while(i<8)
-	  nbre+=does_block_ennemy(tabs[i++], player);
+	  nbre+=does_block_ennemy(tabs[i++]);
 	i=0;
 	while(i<8)
 		free(tabs[i++]);
@@ -168,7 +168,7 @@ int blocks_ennemy(t_coup *coups, t_coord coord, char player)
 	return (0);
 }
 
-int does_block_ennemy(char *chaine, signed char player)
+int does_block_ennemy(char *chaine)
 {
 	char modele1[4]={MOI, ADVERSAIRE, ADVERSAIRE, ADVERSAIRE};
 	char modele2[5]={MOI, ADVERSAIRE, ADVERSAIRE, ADVERSAIRE, MOI};
@@ -184,17 +184,17 @@ int	fills_hole(t_coup *coups, t_coord coord, char player)
 	char *tabs[8];
 	int nbre = 0;
 	int i = 0;
-	tabs[0] = buildchaine(coups, 1, 0, coord, player, 5, 1); //droite
-	tabs[1] = buildchaine(coups, 1, 1, coord, player, 5, 1); //bas droite
-	tabs[2] = buildchaine(coups, 0, 1, coord, player, 5, 1); //bas
-	tabs[3] = buildchaine(coups, -1, 1, coord, player, 5, 1); //bas gauche
-	tabs[4] = buildchaine(coups, -1, 0, coord, player, 5, 1); //gauche
-	tabs[5] = buildchaine(coups, -1, -1, coord, player, 5, 1); //haut gauche
-	tabs[6] = buildchaine(coups, 0, -1, coord, player, 5, 1); //haut
-	tabs[7] = buildchaine(coups, 1, -1, coord, player, 5, 1); //haut droite
+	tabs[0] = buildchaine(coups, 1, 0, coord, player, 4, 1); //droite
+	tabs[1] = buildchaine(coups, 1, 1, coord, player, 4, 1); //bas droite
+	tabs[2] = buildchaine(coups, 0, 1, coord, player, 4, 1); //bas
+	tabs[3] = buildchaine(coups, -1, 1, coord, player, 4, 1); //bas gauche
+	tabs[4] = buildchaine(coups, -1, 0, coord, player, 4, 1); //gauche
+	tabs[5] = buildchaine(coups, -1, -1, coord, player, 4, 1); //haut gauche
+	tabs[6] = buildchaine(coups, 0, -1, coord, player, 4, 1); //haut
+	tabs[7] = buildchaine(coups, 1, -1, coord, player, 4, 1); //haut droite
 	tabs[8] = 0;
 	while(i<8)
-	  nbre+=does_fill_hole(tabs[i++], player	);
+	  nbre+=does_fill_hole(tabs[i++]);
 	i=0;
 	while(i<8)
 	  free(tabs[i++]);
@@ -206,7 +206,7 @@ int	fills_hole(t_coup *coups, t_coord coord, char player)
 	return(0);
 }
 // on voit si le coup a jouer correspond a: x?xx
-int does_fill_hole(char *chaine, signed char player)
+int does_fill_hole(char *chaine)
 {
 	char modele[4]={ADVERSAIRE, MOI, ADVERSAIRE, ADVERSAIRE};
 	return (!strncmp((char*)&modele, chaine, 4));

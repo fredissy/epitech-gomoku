@@ -46,7 +46,7 @@ t_noeud*GenerateMove(t_noeud *parent, int numerocas, int depth)
   t_coup	*prev;
   t_coup	*orig;
   t_coord	coord;
-  //  int		i = 0;
+  int		i = 0;
   int		x;
   int		y;
 
@@ -88,16 +88,24 @@ t_noeud*GenerateMove(t_noeud *parent, int numerocas, int depth)
   y = dim.maxtop;
   coord.x = x;
   coord.y = y;
+  while(i<numerocas)
+  {
+	  avance(&dim, &coord, 1);
+      if(occupee(parent->coup, coord) != -1)
+        i--;
+      i++;
+  }
 
-  avance(&dim, &coord, numerocas);
-  avance(&dim, &coord, avant(&coord, parent->coup));
+
+//  avance(&dim, &coord, numerocas);
+//  avance(&dim, &coord, avant(&coord, parent->coup));
   //  printf("%d %d\n", coord.x, coord.y);
-  while(occupee(parent->coup, coord) != -1)
-    {
-      avance(&dim, &coord, 1);
-      printf("(a)");
+//  while(occupee(parent->coup, coord) != -1)
+//    {
+//      avance(&dim, &coord, 1);
+//      printf("(a)");
 //            printf("%d %d\n", coord.x, coord.y);
-    }
+//    }
   newcoup=malloc(sizeof(t_coup));
   newcoup->x=coord.x;
   newcoup->y=coord.y;
@@ -107,7 +115,7 @@ t_noeud*GenerateMove(t_noeud *parent, int numerocas, int depth)
   fils->deep=depth;
   fils->x=coord.x;
   fils->y=coord.y;
-  //printf("gen%d,%d\n", coord.x, coord.y);
+  printf("gen%d,%d\n", coord.x, coord.y);
 //  fils->x=x;
 //  fils->y=y;
   fils->fils=0;
