@@ -66,13 +66,13 @@ int blocks_ennemy(t_coup *coups, t_coord coord, char player)
 	i=0;
 	while(i<8)
 		free(tabs[i++]);
-//		return(nbre);
-	if(nbre)
-    {
+		return(nbre);
+//	if(nbre)
+//    {
 //  	  printf("ennemy blocked!:");displaymoves(coups);
-	  return(1);
-    }
-	return (0);
+//	  return(1);
+//    }
+//	return (0);
 }
 
 int does_block_ennemy(char *chaine)
@@ -108,6 +108,12 @@ int	fills_hole(t_coup *coups, t_coord coord, char player)
 	i=0;
 	while(i<8)
 	  free(tabs[i++]);
+//	if(nbre)
+//	{
+//	//	printf("on remplit un trou ennemi\n");
+//		return (1);
+//	}
+//	return(0);
 	return(nbre);
 }
 // on voit si le coup a jouer correspond a: x?xx
