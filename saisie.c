@@ -35,14 +35,14 @@ int			checkdoubletrois(t_coup *coups, t_coord saisie, signed char player)
 	int		nbre = 0;
 	int		i=0;
 
-	tabs[0] = buildchaine(coups, 1, 0, saisie, player); //droite
-	tabs[1] = buildchaine(coups, 1, 1, saisie, player); //bas droite
-	tabs[2] = buildchaine(coups, 0, 1, saisie, player); //bas
-	tabs[3] = buildchaine(coups, -1, 1, saisie, player); //bas gauche
-	tabs[4] = buildchaine(coups, -1, 0, saisie, player); //gauche
-	tabs[5] = buildchaine(coups, -1, -1, saisie, player); //haut gauche
-	tabs[6] = buildchaine(coups, 0, -1, saisie, player); //haut
-	tabs[7] = buildchaine(coups, 1, -1, saisie, player); //haut droite
+	tabs[0] = buildchaine(coups, 1, 0, saisie, player, 5); //droite
+	tabs[1] = buildchaine(coups, 1, 1, saisie, player, 5); //bas droite
+	tabs[2] = buildchaine(coups, 0, 1, saisie, player, 5); //bas
+	tabs[3] = buildchaine(coups, -1, 1, saisie, player, 5); //bas gauche
+	tabs[4] = buildchaine(coups, -1, 0, saisie, player, 5); //gauche
+	tabs[5] = buildchaine(coups, -1, -1, saisie, player, 5); //haut gauche
+	tabs[6] = buildchaine(coups, 0, -1, saisie, player, 5); //haut
+	tabs[7] = buildchaine(coups, 1, -1, saisie, player, 5); //haut droite
 	tabs[8] = 0;
 	while(i<8)
 		nbre+=is_doubletrois(tabs[i++], player);
@@ -73,22 +73,22 @@ int		is_doubletrois(char *chaine, signed char player)
 /* Construit et renvoie une chaine
 ** pour la recherche des doubles trois
 */
-char		*buildchaine(t_coup *coups, int dx, int dy, t_coord coord, signed char player)
+char		*buildchaine(t_coup *coups, int dx, int dy, t_coord coord, signed char player, int size)
 {
 	char	*chaine;
 	int		i = 0;
 
 	coord.x-=dx;
 	coord.y-=dy;
-	chaine = malloc(4*sizeof(char));
-	while(i<5)
+	chaine = malloc((size-1)*sizeof(char));
+	while(i<size)
 	{
 		chaine[i] = dans(coups, coord, player);
 		coord.x+=dx;
 		coord.y+=dy;
 		i++;
 	}
-	chaine[5]=0;
+	chaine[size]=0;
 	return (chaine);
 }
 
