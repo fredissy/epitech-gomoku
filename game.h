@@ -1,23 +1,32 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-
+#include <string.h>
+//dans la liste chainée des positions
 #define NOPLAYER -1
 #define PLAYER1 0
 #define PLAYER2 1
 
+//pour les arguments
 #define UNJOUEUR 0
 #define DEUXJOUEURS 1
 #define RUN_DEBUG 1
 #define FULL_DEBUG 2
 
+//params generaux du jeux
 #define FREE 0
 #define DIM 19
 #define MAXDEPTH 3
 #define EXTRA 2
 
+//max ou min de deux valeurs
 #define MAX(x,y) ((x)>(y)?(x):(y))
 #define MIN(x,y) ((x)<(y)?(x):(y))
+
+//pour la recherche du double trois
+#define MOI '1'
+#define ADVERSAIRE '2'
+#define PERSONNE '0'
 
 typedef struct s_coup
 {
@@ -87,7 +96,12 @@ void	ajoutecoup(t_noeud *parent, t_coord, int player);
 void	gameloop_1p();
 void	gameloop_2p();
 void	avance(t_dimensions *dim, t_coord *initial, int rang);
-int	avant(t_coord *nouv, t_coup *orig);
-int	occupee(t_coup *orig, t_coord coord);
+int		avant(t_coord *nouv, t_coup *orig);
+int		occupee(t_coup *orig, t_coord coord);
 t_args	arguments(int ac, char **av);
 t_coord	saisie(signed char player, t_coup *coups);
+int		saisie_ok(t_coup *coups, t_coord saisie, signed char player);
+char	*buildchaine(t_coup *coups, int dx, int dy, t_coord coord, signed char player);
+int		dans(t_coup *orig, t_coord coord, signed char player);
+int		checkdoubletrois(t_coup *coups, t_coord saisie, signed char player);
+int		is_doubletrois(char *chaine, signed char player);

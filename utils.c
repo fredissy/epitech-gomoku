@@ -181,29 +181,12 @@ int	occupee(t_coup *orig, t_coord coord)
     {
       //      printf("[%d;%d](%d;%d)\n", orig->x, orig->y, coord.x, coord.y);
       if(orig->x == coord.x && orig->y == coord.y)
-	{
+	  {
 	  //	  printf("retour:%d\n",orig->player);
-	  return(orig->player);
-	}
+	    return(orig->player);
+	  }
       orig=orig->next;
     }
   return (NOPLAYER);
 }
 
-t_coord	saisie(signed char player, t_coup *coups)
-{
-  t_coord saisie;
-  saisie.x = DIM + 1;
-  saisie.y = DIM + 1;
-  while((saisie.x<0 || saisie.x>DIM) && occupee(coups, saisie) != -1)
-    {
-      printf("joueur %d coord x? ", player+1);
-      scanf("%d", &saisie.x);
-    }
-  while((saisie.y<0 || saisie.y>DIM) && occupee(coups, saisie) != -1)
-    {
-      printf("joueur %d coord y? ", player+1);
-      scanf("%d", &saisie.y);
-    }
-  return(saisie);
-}
