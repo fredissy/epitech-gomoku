@@ -21,7 +21,7 @@ void	removecoup(t_noeud *parent, t_coord coord);;
 void	gameloop_1p();
 void	gameloop_2p();
 void	avance(t_dimensions *dim, t_coord *initial, int rang);
-int		avant(t_coord *nouv, t_coup *orig);
+//int		avant(t_coord *nouv, t_coup *orig);
 int		occupee(t_coup *orig, t_coord coord);
 t_args	arguments(int ac, char **av);
 t_coord	saisie(signed char player, t_coup *coups);
