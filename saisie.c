@@ -35,14 +35,14 @@ int			checkdoubletrois(t_coup *coups, t_coord saisie, signed char player)
 	int		nbre = 0;
 	int		i=0;
 
-	tabs[0] = buildchaine(coups, 1, 0, saisie, player, 5); //droite
-	tabs[1] = buildchaine(coups, 1, 1, saisie, player, 5); //bas droite
-	tabs[2] = buildchaine(coups, 0, 1, saisie, player, 5); //bas
-	tabs[3] = buildchaine(coups, -1, 1, saisie, player, 5); //bas gauche
-	tabs[4] = buildchaine(coups, -1, 0, saisie, player, 5); //gauche
-	tabs[5] = buildchaine(coups, -1, -1, saisie, player, 5); //haut gauche
-	tabs[6] = buildchaine(coups, 0, -1, saisie, player, 5); //haut
-	tabs[7] = buildchaine(coups, 1, -1, saisie, player, 5); //haut droite
+	tabs[0] = buildchaine(coups, 1, 0, saisie, player, 5, 1); //droite
+	tabs[1] = buildchaine(coups, 1, 1, saisie, player, 5, 1); //bas droite
+	tabs[2] = buildchaine(coups, 0, 1, saisie, player, 5, 1); //bas
+	tabs[3] = buildchaine(coups, -1, 1, saisie, player, 5, 1); //bas gauche
+	tabs[4] = buildchaine(coups, -1, 0, saisie, player, 5, 1); //gauche
+	tabs[5] = buildchaine(coups, -1, -1, saisie, player, 5, 1); //haut gauche
+	tabs[6] = buildchaine(coups, 0, -1, saisie, player, 5, 1); //haut
+	tabs[7] = buildchaine(coups, 1, -1, saisie, player, 5, 1); //haut droite
 	tabs[8] = 0;
 	while(i<8)
 		nbre+=is_doubletrois(tabs[i++], player);
@@ -60,8 +60,8 @@ int			checkdoubletrois(t_coup *coups, t_coord saisie, signed char player)
 */
 int		is_doubletrois(char *chaine, signed char player)
 {
-	char modele1[5]={PERSONNE,PERSONNE,MOI,MOI,PERSONNE};
-	char modele2[5]={PERSONNE,PERSONNE,PERSONNE,MOI,MOI};
+	char modele1[5]={PERSONNE,/*joue ici*/PERSONNE,MOI,MOI,PERSONNE};
+	char modele2[5]={PERSONNE,/*joue ici*/PERSONNE,PERSONNE,MOI,MOI};
 
 	if(!strncmp((char*)&modele1, chaine, 5))
 		return(1);
@@ -73,22 +73,22 @@ int		is_doubletrois(char *chaine, signed char player)
 /* Construit et renvoie une chaine
 ** pour la recherche des doubles trois
 */
-char		*buildchaine(t_coup *coups, int dx, int dy, t_coord coord, signed char player, int size)
+char		*buildchaine(t_coup *coups, int dx, int dy, t_coord coord, signed char player, int len, int decalage)
 {
 	char	*chaine;
 	int		i = 0;
 
-	coord.x-=dx;
-	coord.y-=dy;
-	chaine = malloc((size-1)*sizeof(char));
-	while(i<size)
+	coord.x-=(decalage*dx);
+	coord.y-=(decalage*dy);
+	chaine = malloc((len-1)*sizeof(char));
+	while(i<len)
 	{
 		chaine[i] = dans(coups, coord, player);
 		coord.x+=dx;
 		coord.y+=dy;
 		i++;
 	}
-	chaine[size]=0;
+	chaine[len]=0;
 	return (chaine);
 }
 
