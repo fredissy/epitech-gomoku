@@ -27,9 +27,11 @@ int evalnode(t_noeud *gamestate, char player, t_args args)
   if(blocks_ennemy(gamestate->coup, coord, player))
     score=10;
   bestscore = MAX(score, bestscore);
+
   if(get_maxalign(gamestate->coup, gamestate) == 5)
   	score=20;
   gamestate->value=bestscore;
+
   return(bestscore);
 }
 
@@ -251,7 +253,7 @@ int get_maxalign(t_coup *tocheck, t_noeud *gamestate)
 	coord.x=tocheck->x;
 	coord.y=tocheck->y;
 	coups = gamestate->coup;
-printf("(%d;%d) ", coord.x, coord.y);
+	//printf("(%d;%d) ", coord.x, coord.y);
 	tabs[0] = buildchaine2(coups, 1, 0, coord, PLAYER1, 5); //droite
 	tabs[1] = buildchaine2(coups, 1, 1, coord, PLAYER1, 5); //bas droite
 	tabs[2] = buildchaine2(coups, 0, 1, coord, PLAYER1, 5); //bas
