@@ -20,26 +20,30 @@ t_noeud		*MaxMove(t_noeud *gamepos, int depth, char player, int alpha, int beta,
   t_dimensions dim;
   int		i=0;
   int		nbcas;
-  if((bestmove = malloc(sizeof(t_noeud)))==NULL)
-  {
-	  printf("Could not malloc (4)\n");
-  }
+
 
   if(/*gameended(gamepos)||*/depth==0)
     {
 	//  printf("DEPTH=0 %d\n", PLAYER2);
-      evalnode(gamepos, PLAYER2, args);
+      evalnode(gamepos, !player, args);
+      //evalnode(gamepos, PLAYER2, args);
       return(gamepos);
     }
   else
     {
+	  if((bestmove = malloc(sizeof(t_noeud)))==NULL)
+	  {
+		  printf("Could not malloc (4)\n");
+
+	  }
+	  t_noeud	*curmove;
 	  dim = getdimensions(gamepos);
   	  nbcas = dim.width * dim.height - nbpions(gamepos);
       while(i<nbcas)
       {
 	    move = GenerateMove(gamepos, i, depth - 1);
 	    //displaymoves(gamepos->coup);
-	    t_noeud	*curmove;
+
 	    curmove = MinMove(move, depth - 1, !player, alpha, beta, args);
 //	    printf("minmove ok\n");
 //	    displaymoves(curmove->coup);
@@ -70,8 +74,10 @@ t_noeud		*MaxMove(t_noeud *gamepos, int depth, char player, int alpha, int beta,
 //	  if(alpha>beta)
 //	    return (bestmove);
 	    free(move);
+
 	  i++;
 	}
+	//free(curmove);
       return (bestmove);
     }
 }
@@ -83,25 +89,26 @@ t_noeud		*MinMove(t_noeud *gamepos, int depth, char player, int alpha, int beta,
   t_dimensions dim;
   int		i = 0;
   int nbcas;
-  if((bestmove = malloc(sizeof(t_noeud)))==NULL)
-  {
-  	  printf("Could not malloc (4)\n");
-  }
   if(/*gameended(gamepos)||*/depth==0)
     {
-      //evalnode(gamepos, player, args);
-      evalnode(gamepos, PLAYER2, args);
+      evalnode(gamepos, player, args);
+      //evalnode(gamepos, PLAYER2, args);
       return(gamepos);
     }
   else
     {
+	  if((bestmove = malloc(sizeof(t_noeud)))==NULL)
+	  {
+	  	  printf("Could not malloc (4)\n");
+	  }
+t_noeud	*curmove;
 	  dim = getdimensions(gamepos);
 	  nbcas = dim.width * dim.height - nbpions(gamepos);
       while(i<nbcas)
 	{
 		move = GenerateMove(gamepos, i, depth - 1);
 //		displaymoves(move->coup);
-		t_noeud	*curmove;
+
     	curmove = MaxMove(move, depth - 1, !player, alpha, beta, args);
 	    if(depth==MAXDEPTH && args.debug==FULL_DEBUG)
 	    {
@@ -125,8 +132,10 @@ t_noeud		*MinMove(t_noeud *gamepos, int depth, char player, int alpha, int beta,
 //	  if(alpha>beta)
 //	    return(bestmove);
       free(move);
+
 	  i++;
 	}
+	//free(curmove);
       return (bestmove);
     }
 }

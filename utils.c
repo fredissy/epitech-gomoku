@@ -106,16 +106,18 @@ int y(t_noeud *noeud)
 
 void	ajoutecoup(t_noeud *parent, t_coord coord, int player)
 {
-  t_coup	*prev;
+  t_coup	*prev = 0;
   t_coup	*cur;
   t_coup	*newcoup;
-  prev = parent->coup;
+
+  if(parent)
+    prev = parent->coup;
   while(prev)
     {
       cur=prev;
       prev=prev->next;
     }
-  newcoup = malloc(1*sizeof(t_coup));
+  newcoup = malloc(sizeof(t_coup));
   newcoup->x = coord.x;
   newcoup->y = coord.y;
   newcoup->player = player;
@@ -124,6 +126,37 @@ void	ajoutecoup(t_noeud *parent, t_coord coord, int player)
     cur->next=newcoup;
   else
     parent->coup=newcoup;
+}
+
+t_coup *copycoup(t_coup *src)
+{
+	t_coup *nouv;
+	nouv = malloc(sizeof(t_coup));
+	nouv->x = src->x;
+	nouv->y = src->y;
+	nouv->player = src->player;
+	return(nouv);
+}
+
+t_coup *duplicate(t_coup *src)
+{
+	t_coup *first;
+	t_coup *cur;
+
+	if(src)
+		first = copycoup(src);
+	else
+		return(0);
+
+	cur = first;
+	src = src->next;
+	while(src)
+	{
+		cur->next = copycoup(src);
+		cur = cur->next;
+		src = src->next;
+	}
+	return(first);
 }
 
 void	avance(t_dimensions *dim, t_coord *initial, int rang)
@@ -144,6 +177,7 @@ void	avance(t_dimensions *dim, t_coord *initial, int rang)
 	    }
 	}
 }
+
 //donne le nbre de cases occupees avant celle en nouv
 //                       .-------------------------'
 int	avant(t_coord *nouv, t_coup *orig)

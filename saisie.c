@@ -12,6 +12,8 @@ t_coord	saisie(signed char player, t_coup *coups)
     {
       printf("joueur %d coords x;y? ", player+1);
       scanf("%s", (char*)&buffer);
+      //if(!strcmp(&buffer, "hint"))
+      //	showhint(coups, player);
       sscanf((char*)&buffer,"%u;%u", &saisie.x, &saisie.y);
     }
   return (saisie);

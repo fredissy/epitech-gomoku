@@ -15,10 +15,13 @@
 #define FULL_DEBUG 2
 
 //params generaux du jeux
-#define FREE 0
-#define DIM 19
-#define MAXDEPTH 1
-#define EXTRA 2
+//#define FREE 0
+//taille du damier
+#define DIM 15
+//profondeur de rechercher
+#define MAXDEPTH 2
+//expansion a chaque fois
+#define EXTRA 1
 
 //max ou min de deux valeurs
 #define MAX(x,y) ((x)>(y)?(x):(y))
@@ -124,3 +127,5 @@ int does_fill_hole(char *chaine);
 int	fills_hole(t_coup *coups, t_coord coord, char player);
 void showgrid(t_noeud *gamestate);
 void printchaine(char *chaine, int len);
+t_coup *duplicate(t_coup *src);
+t_coup *copycoup(t_coup *src);
