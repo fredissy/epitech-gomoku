@@ -9,7 +9,7 @@
 
 void removearbrecontent(t_noeud *racine)
 {
-  int i=0;
+//  int i=0;
   t_coup *coups;
   t_coup *suivant;
   //   printf("debut D=%d %d\n", racine->deep, racine);
@@ -20,7 +20,7 @@ void removearbrecontent(t_noeud *racine)
     suivant = coups->next;
   else
     suivant = 0;
-   //printf("suivant ok...%d\n", suivant); 
+   //printf("suivant ok...%d\n", suivant);
   while(suivant)
     {
       //printf("r\n");
@@ -30,23 +30,24 @@ void removearbrecontent(t_noeud *racine)
     }
   //printf("boucle finie\n");
   free(coups);
+free(racine);
   //printf("free coupok %d\n", racine->fils);
-
-  if(racine->fils)
-    {
+//free(racine);
+  //if(racine->fils)
+  //  {
       //printf("enleve les fils D=%d:\n",racine->deep);
-      while(racine->fils[i])
-	{
+  //    while(racine->fils[i])
+//	{
  	  //printf("enleve le fils %d parent D=%d\n", i, racine->deep);
-	  removearbrecontent(racine->fils[i]);
+//	  removearbrecontent(racine->fils[i]);
 	  //printf("free...%d %d %d\n", i, racine->deep, racine->fils);
 	  //	  free(racine->fils[i]);
 	  //printf("fils %d enleve ok\n", i);
-	  i++;
-	}
+//	  i++;
+//	}
       //printf("free racine->fils\n");
       //      free(racine->fils);
-    }
+  //  }
   //  else
     //printf("pas de fils!\n");
   //  free(racine);

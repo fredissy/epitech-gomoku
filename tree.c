@@ -5,10 +5,10 @@ t_coord	  MinMax(t_noeud *gamepos, int depth, char player, t_args args)
   t_noeud *i;
   t_coord toplay;
   i=MaxMove(gamepos, depth, player, 1000, 1000, args);
-  toplay.x=x(i);
-  toplay.y=y(i);
+  toplay.x=i->x;
+  toplay.y=i->y;
 //  printf("   "); displaymoves(i->coup);
-  //  removearbrecontent(i);
+  removearbrecontent(i);
   return(toplay);
 }
 
@@ -45,7 +45,6 @@ t_noeud		*MaxMove(t_noeud *gamepos, int depth, char player, int alpha, int beta,
 	    //displaymoves(gamepos->coup);
 
 	    curmove = MinMove(move, depth - 1, !player, alpha, beta, args);
-	    free(curmove);
 //	    printf("minmove ok\n");
 //	    displaymoves(curmove->coup);
 	    if(depth==MAXDEPTH && args.debug==FULL_DEBUG)
@@ -75,7 +74,6 @@ t_noeud		*MaxMove(t_noeud *gamepos, int depth, char player, int alpha, int beta,
 //	  if(alpha>beta)
 //	    return (bestmove);
 	    free(move);
-
 	  i++;
 	}
 	//free(curmove);
@@ -123,7 +121,7 @@ t_noeud	*curmove;
 	        bestmove->value = Value(curmove);
 	    //  beta=Value(curmove);
 	    }
-	  if((30-Value(curmove))<(30-Value(bestmove)))
+	  if((100-Value(curmove))<(100-Value(bestmove)))
 	    {
 			bcopy(move, bestmove, sizeof(t_noeud));
 	        bestmove->value = Value(curmove);
@@ -133,7 +131,6 @@ t_noeud	*curmove;
 //	  if(alpha>beta)
 //	    return(bestmove);
       free(move);
-
 	  i++;
 	}
 	//free(curmove);

@@ -50,6 +50,8 @@ t_noeud*GenerateMove(t_noeud *parent, int numerocas, int depth)
   y = dim.maxtop;
   coord.x = x;
   coord.y = y;
+  if(occupee(parent->coup, coord) != -1)
+  i--;
   while(i<numerocas)
   {
 	  avance(&dim, &coord, 1);
@@ -69,6 +71,6 @@ t_noeud*GenerateMove(t_noeud *parent, int numerocas, int depth)
   fils->deep=depth;
   fils->x=coord.x;
   fils->y=coord.y;
-  fils->fils=0;
+  //fils->fils = 0;
   return(fils);
 }
