@@ -27,7 +27,7 @@ int evalnode(t_noeud *gamestate, char player, t_args args)
 			coord.y=coup->y;
 			score = evalcase_align(gamestate->coup, coord, player);
 			if(blocks_ennemy(gamestate->coup, coord, player))
-				return (10);
+				score=10;
       		if(score==0)
       			return(0);
       		bestscore = MAX(score, bestscore);
@@ -205,28 +205,30 @@ int blocks_ennemy(t_coup *coups, t_coord coord, char player)
 	char	*tabs[8];
 	int		nbre = 0;
 	int		i=0;
-	tabs[0] = buildchaine2(coups, 1, 0, coord, player, 5); //droite
-	tabs[1] = buildchaine2(coups, 1, 1, coord, player, 5); //bas droite
-	tabs[2] = buildchaine2(coups, 0, 1, coord, player, 5); //bas
-	tabs[3] = buildchaine2(coups, -1, 1, coord, player, 5); //bas gauche
-	tabs[4] = buildchaine2(coups, -1, 0, coord, player, 5); //gauche
-	tabs[5] = buildchaine2(coups, -1, -1, coord, player, 5); //haut gauche
-	tabs[6] = buildchaine2(coups, 0, -1, coord, player, 5); //haut
-	tabs[7] = buildchaine2(coups, 1, -1, coord, player, 5); //haut droite
+	tabs[0] = buildchaine2(coups, 1, 0, coord, player, 6); //droite
+	tabs[1] = buildchaine2(coups, 1, 1, coord, player, 6); //bas droite
+	tabs[2] = buildchaine2(coups, 0, 1, coord, player, 6); //bas
+	tabs[3] = buildchaine2(coups, -1, 1, coord, player, 6); //bas gauche
+	tabs[4] = buildchaine2(coups, -1, 0, coord, player, 6); //gauche
+	tabs[5] = buildchaine2(coups, -1, -1, coord, player, 6); //haut gauche
+	tabs[6] = buildchaine2(coups, 0, -1, coord, player, 6); //haut
+	tabs[7] = buildchaine2(coups, 1, -1, coord, player, 6); //haut droite
 	tabs[8] = 0;
 
 	while(i<8)
 	{
-		printf("%s ", tabs[i]);
+//		printf("%s ", tabs[i]);
 		nbre+=does_block_ennemy(tabs[i++], player);
 	}
-	printf("\n");
+//	printf("\n");
 	i=0;
 	while(i<8)
 		free(tabs[i++]);
 	if(nbre)
-	{printf("block if (%d;%d)", coord.x, coord.y);
-		return(1);}
+{
+	printf("ennemy blocked!\n");
+	return(1);
+}
 	return (0);
 }
 
@@ -234,7 +236,10 @@ int does_block_ennemy(char *chaine, signed char player)
 {
 	//definir les situations sous forme de chaine, et les comparer à chaine
 	//un peu comme la vérif du double 3
-	char modele1[4]={MOI, ADVERSAIRE, ADVERSAIRE, ADVERSAIRE, 0};
+	char modele1[4]={MOI, ADVERSAIRE, ADVERSAIRE, ADVERSAIRE};
+	char modele2[5]={MOI, ADVERSAIRE, ADVERSAIRE, ADVERSAIRE, MOI};
+	if(!strncmp((char*)&modele2, chaine, 5))
+		return(0);
 	if(!strncmp((char*)&modele1, chaine, 4))
 		return(1);
 	return(0);
