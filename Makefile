@@ -7,7 +7,7 @@
 ## Started on  Fri Nov  9 15:45:22 2001 frederic lenois
 ##
 
-SRC 	= tree.c game.c eval.c utils.c menage.c generate.c saisie.c disp.c
+SRC 	= disp.c tree.c game.c eval.c utils.c menage.c generate.c saisie.c
 
 NAME 	= egomoku
 OBJ 	= $(SRC:.c=.o)

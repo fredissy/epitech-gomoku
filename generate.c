@@ -1,5 +1,6 @@
 #include "game.h"
 
+/*
 t_noeud	**GenerateMoves(t_noeud *gamepos, int depth)
 {
   t_dimensions	dim;
@@ -30,6 +31,7 @@ t_noeud	**GenerateMoves(t_noeud *gamepos, int depth)
   return(moves);
 
 }
+*/
 
 /* on calcule le nombre de cas possibles, contenus dans une fenetre mobile
 ** ensuite on va generer toutes les situations possibles en ajoutant un pion
@@ -93,6 +95,7 @@ t_noeud*GenerateMove(t_noeud *parent, int numerocas, int depth)
   while(occupee(parent->coup, coord) != -1)
     {
       avance(&dim, &coord, 1);
+      printf("(a)");
 //            printf("%d %d\n", coord.x, coord.y);
     }
   newcoup=malloc(sizeof(t_coup));

@@ -104,7 +104,6 @@ int y(t_noeud *noeud)
     return(noeud->y);
 }
 
-
 void	ajoutecoup(t_noeud *parent, t_coord coord, int player)
 {
   t_coup	*prev;
@@ -151,14 +150,22 @@ int	avant(t_coord *nouv, t_coup *orig)
 {
   int	nbre;
   nbre = 0;
+  printf("(%d;%d)", nouv->x, nouv->y);
   while(orig)
     {
-      if(orig->y < nouv->y) //si sur une ligne avant
+    if(orig->y < nouv->y) //si sur une ligne avant
+	{
+		printf(".");
 	nbre++;
+}
       if(orig->y == nouv->y && orig->x <= nouv->x) //si sur la meme ligne, avant en x
+	{
+		printf(".");
 	nbre++;
+}
       orig=orig->next;
     }
+printf("(%d avant) ", nbre);
   return nbre;
 }
 

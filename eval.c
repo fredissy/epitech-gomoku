@@ -6,57 +6,80 @@ int evalnode(t_noeud *gamestate, char player, t_args args)
   int	score=0;
   t_coup	*coup;
   t_coord coord;
-  coup=gamestate->coup;
-  coord.x=gamestate->x;
-  coord.y=gamestate->y;
-
   if(gamestate==0)
     return (0);
-  printf("eval(%d,%d)", coord.x, coord.y);
-  score = evalcase_align(gamestate->coup, coord, player);
-  bestscore = MAX(score, bestscore);
-  printf(".");
-  if(score==0)
-  	  return(0);
-
-  if(blocks_ennemy(gamestate->coup, coord, player)|| blocks_hole(gamestate->coup, coord, player))
+  coup=gamestate->coup;
+  printf("-> %d;%d\n", gamestate->x, gamestate->y);
+			coord.x=gamestate->x;
+			coord.y=gamestate->y;
+			score = evalcase_align(gamestate->coup, coord, player);
+      		if(score==0)
+      			return(0);
+      		bestscore = MAX(score, bestscore);
+  if(blocks_ennemy(gamestate->coup, coord, player)||fills_hole(gamestate->coup, coord, player))
     score=10;
   bestscore = MAX(score, bestscore);
-  printf(".");
+
   if(get_maxalign_coord(coord, gamestate) == 5)
   	score=20;
-  bestscore = MAX(score, bestscore);
-    printf(".ok\n");
-//  if(checkdoubletrois(gamestate->coup, coord, player))
-//    bestscore= 0;
   gamestate->value=bestscore;
+
   return(bestscore);
 }
-
-/************************************************************/
 
 int	evalcase_align(t_coup *coups, t_coord coord, char player)
 {
   int	score=0;
+  int tmpscore=0;
 
   if(occupee(coups, coord)== NOPLAYER)
     return (0);
   if(coord.x<=DIM-6 && coord.x>=0)
-	 score=MAX(score, eval_line(coups, coord, 1, 0, player));
+  {
+	 tmpscore = eval_line(coups, coord, 1, 0, player);
+     score = MAX(score, tmpscore);
+  }
+
   if(coord.y<=DIM-6 && coord.y>=0 && coord.x<=DIM-6 && coord.x>=0)
-	 score=MAX(score, eval_line(coups, coord, 1, 1, player));
+  {
+	 tmpscore = eval_line(coups, coord, 1, 1, player);
+     score = MAX(score, tmpscore);
+  }
+
   if(coord.y<=DIM-6 && coord.y>=0)
-    score=MAX(score, eval_line(coups, coord, 0, 1, player));
+  {
+    tmpscore=eval_line(coups, coord, 0, 1, player);
+	score = MAX(score, tmpscore);
+  }
   if(coord.y<=DIM-6 && coord.y>=0 && coord.x>=5 && coord.x<=DIM)
-    score=MAX(score,eval_line(coups, coord, -1, 1, player));
+  {
+    tmpscore=eval_line(coups, coord, -1, 1, player);
+	score = MAX(score, tmpscore);
+  }
+
   if(coord.x>=5 && coord.x<=DIM)
- 	score=MAX(score,eval_line(coups, coord, -1, 0, player));
+  {
+ 	tmpscore=eval_line(coups, coord, -1, 0, player);
+	score = MAX(score, tmpscore);
+  }
+
   if(coord.x>=5 && coord.x<=DIM && coord.y>=5 && coord.y<=DIM)
-	score=MAX(score,eval_line(coups, coord, -1, -1, player));
+  {
+    tmpscore=eval_line(coups, coord, -1, -1, player);
+	score = MAX(score, tmpscore);
+  }
+
   if(coord.y>=5 && coord.y<=DIM)
-	score=MAX(score, eval_line(coups, coord, 0, -1, player));
+  {
+	tmpscore=eval_line(coups, coord, 0, -1, player);
+	score = MAX(score, tmpscore);
+  }
+
   if(coord.x<=DIM-6 && coord.x>=0 && coord.y>=5 && coord.y<=DIM)
-	score=MAX(score,eval_line(coups, coord, 1, -1, player));
+  {
+	tmpscore=eval_line(coups, coord, 1, -1, player);
+	score = MAX(score, tmpscore);
+  }
   return(score);
 }
 
@@ -69,12 +92,14 @@ int	eval_line(t_coup *coups, t_coord coord, signed int xm, signed int ym, char p
   int	nbfree=0;
   char	player_2;
   int	score;
-
+t_coord backup;
+backup=coord;
   if(player==PLAYER1)
     player_2=PLAYER2;
   else
     player_2=PLAYER1;
 
+  //on construit la ligne a inspecter
   coord.x-=4*xm;
   coord.y-=4*ym;
   for(i=0;i<10;i++)
@@ -108,34 +133,13 @@ int	eval_line(t_coup *coups, t_coord coord, signed int xm, signed int ym, char p
   else
   	return (0);
 }
+// x: adv
+// ?: coup a jouer
+// o: nous
+// -: case vide
+// on verifie si on se trouve dans : ?xxx-
+// on ne joue pas si ?xxxo
 
-//verifie les blocages possible de type **-*
-int blocks_hole(t_coup *coups, t_coord coord, char player)
-{
-	char	*tabs[8];
-	int		nbre = 0;
-	int		i=0;
-	tabs[0] = buildchaine(coups, 1, 0, coord, player, 5, 2); //droite
-	tabs[1] = buildchaine(coups, 1, 1, coord, player, 5, 2); //bas droite
-	tabs[2] = buildchaine(coups, 0, 1, coord, player, 5, 2); //bas
-	tabs[3] = buildchaine(coups, -1, 1, coord, player, 5, 2); //bas gauche
-	tabs[4] = buildchaine(coups, -1, 0, coord, player, 5, 2); //gauche
-	tabs[5] = buildchaine(coups, -1, -1, coord, player, 5, 2); //haut gauche
-	tabs[6] = buildchaine(coups, 0, -1, coord, player, 5, 2); //haut
-	tabs[7] = buildchaine(coups, 1, -1, coord, player, 5, 2); //haut droite
-	tabs[8] = 0;
-
-	while(i<8)
-	  nbre+=does_block_hole(tabs[i++]);
-	i=0;
-	while(i<8)
-		free(tabs[i++]);
-	if(nbre)
-	  return(1);
-	return (0);
-}
-
-//verifie les blocages possible de type -***-
 int blocks_ennemy(t_coup *coups, t_coord coord, char player)
 {
 	char	*tabs[8];
@@ -152,16 +156,19 @@ int blocks_ennemy(t_coup *coups, t_coord coord, char player)
 	tabs[8] = 0;
 
 	while(i<8)
-	  nbre+=does_block_ennemy(tabs[i++]);
+	  nbre+=does_block_ennemy(tabs[i++], player);
 	i=0;
 	while(i<8)
-	  free(tabs[i++]);
+		free(tabs[i++]);
 	if(nbre)
+    {
+//  	  printf("ennemy blocked!:");displaymoves(coups);
 	  return(1);
+    }
 	return (0);
 }
 
-int does_block_ennemy(char *chaine)
+int does_block_ennemy(char *chaine, signed char player)
 {
 	char modele1[4]={MOI, ADVERSAIRE, ADVERSAIRE, ADVERSAIRE};
 	char modele2[5]={MOI, ADVERSAIRE, ADVERSAIRE, ADVERSAIRE, MOI};
@@ -172,11 +179,58 @@ int does_block_ennemy(char *chaine)
 	return(0);
 }
 
-int does_block_hole(char *chaine)
+int	fills_hole(t_coup *coups, t_coord coord, char player)
 {
-	char modele1[4]={ADVERSAIRE, ADVERSAIRE, MOI, ADVERSAIRE};
-	return(!strncmp((char*)&modele1, chaine, 4));
+	char *tabs[8];
+	int nbre = 0;
+	int i = 0;
+	tabs[0] = buildchaine(coups, 1, 0, coord, player, 5, 1); //droite
+	tabs[1] = buildchaine(coups, 1, 1, coord, player, 5, 1); //bas droite
+	tabs[2] = buildchaine(coups, 0, 1, coord, player, 5, 1); //bas
+	tabs[3] = buildchaine(coups, -1, 1, coord, player, 5, 1); //bas gauche
+	tabs[4] = buildchaine(coups, -1, 0, coord, player, 5, 1); //gauche
+	tabs[5] = buildchaine(coups, -1, -1, coord, player, 5, 1); //haut gauche
+	tabs[6] = buildchaine(coups, 0, -1, coord, player, 5, 1); //haut
+	tabs[7] = buildchaine(coups, 1, -1, coord, player, 5, 1); //haut droite
+	tabs[8] = 0;
+	while(i<8)
+	  nbre+=does_fill_hole(tabs[i++], player	);
+	i=0;
+	while(i<8)
+	  free(tabs[i++]);
+	if(nbre)
+	{
+		printf("on remplit un trou ennemi\n");
+		return (1);
+	}
+	return(0);
 }
+// on voit si le coup a jouer correspond a: x?xx
+int does_fill_hole(char *chaine, signed char player)
+{
+	char modele[4]={ADVERSAIRE, MOI, ADVERSAIRE, ADVERSAIRE};
+	return (!strncmp((char*)&modele, chaine, 4));
+}
+
+
+//pareil que buildchaine, sans décalage au depart
+//char		*buildchaine2(t_coup *coups, int dx, int dy, t_coord coord, signed char player, int size)
+//{
+//	char	*chaine;
+//	int		i = 0;
+//
+//	chaine = malloc((size-1)*sizeof(char));
+//	while(i<size)
+//	{
+//		chaine[i] = dans(coups, coord, player);
+//		coord.x+=dx;
+//		coord.y+=dy;
+//		i++;
+//	}
+//	chaine[size]=0;
+//	return (chaine);
+//}
+
 
 int gameended(t_noeud *gamestate)
 {
@@ -195,6 +249,7 @@ int gameended(t_noeud *gamestate)
 
 int get_maxalign_coup(t_coup *tocheck, t_noeud *gamestate)
 {
+
 	t_coord coord;
 	coord.x=tocheck->x;
 	coord.y=tocheck->y;
@@ -205,6 +260,7 @@ int get_maxalign_coord(t_coord coord, t_noeud *gamestate)
 {
 	t_coup *coups;
 	char	*tabs[8];
+	int		nbre = 0;
 	int		bestnbre=0;
 	int		i=0;
 	coups = gamestate->coup;
@@ -219,8 +275,12 @@ int get_maxalign_coord(t_coord coord, t_noeud *gamestate)
 	tabs[8] = 0;
 
 	while(i<8)
-	  bestnbre = MAX(bestnbre, checkstring_for_victory(tabs[i++]));
+	{
+		nbre = checkstring_for_victory(tabs[i++]);
+		bestnbre=MAX(nbre, bestnbre);
+	}
 	i=0;
+	//printf("Pour (%d;%d), maxalign_coord=%d ", coord.x, coord.y, bestnbre);
 	while(i<8)
 		free(tabs[i++]);
     return(bestnbre);

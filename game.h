@@ -1,4 +1,3 @@
-//includes habituels...
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -32,11 +31,16 @@
 
 typedef struct s_coup
 {
-  signed char	player;	//joueur present
-  int		x;			//coordonnées x
-  int		y;			// ... et y
-  struct s_coup	*next;	//ptr vers le suivant
+  signed char	player;		        //joueur present
+  int		x;
+  int		y;
+  struct s_coup	*next;
 } t_coup;
+
+//typedef struct s_tab
+//{
+//  t_coup	t[DIM][DIM];
+//} t_tab;
 
 typedef struct s_noeud
 {
@@ -87,6 +91,7 @@ t_noeud	*GenerateMove(t_noeud *parent, int numerocas, int depth);
 t_noeud	**GenerateMoves(t_noeud *gamepos, int depth);
 t_dimensions	getdimensions(t_noeud *gamestate);
 int		Value(t_noeud *noeud);
+//t_tab	*generatetable(t_coup *first);
 int		evalcase_align(t_coup *coups, t_coord, char player);
 int	eval_line(t_coup *coups, t_coord coord, signed int xm, signed int ym, char player);
 void	displaymoves(t_coup *coup);
@@ -104,15 +109,17 @@ t_args	arguments(int ac, char **av);
 t_coord	saisie(signed char player, t_coup *coups);
 int		saisie_ok(t_coup *coups, t_coord saisie, signed char player);
 char	*buildchaine(t_coup *coups, int dx, int dy, t_coord coord, signed char player, int size, int decalage);
+//char	*buildchaine2(t_coup *coups, int dx, int dy, t_coord coord, signed char player, int size);
 int		dans(t_coup *orig, t_coord coord, signed char player);
 int		checkdoubletrois(t_coup *coups, t_coord saisie, signed char player);
 int		is_doubletrois(char *chaine, signed char player);
 t_coord	generatecoord(int x, int y);
 int	occupee2(t_coup *orig, t_coord coord);
 int blocks_ennemy(t_coup *coups, t_coord coord, char player);
-int blocks_hole(t_coup *coups, t_coord coord, char player);
-int does_block_ennemy(char *chaine);
-int does_block_hole(char *chaine);
+int does_block_ennemy(char *chaine, signed char player);
 int get_maxalign_coup(t_coup *tocheck, t_noeud *gamestate);
 int get_maxalign_coord(t_coord coord, t_noeud *gamestate);
 int checkstring_for_victory(char *chaine);
+int does_fill_hole(char *chaine, signed char player);
+int	fills_hole(t_coup *coups, t_coord coord, char player);
+void showgrid(t_noeud *gamestate);
