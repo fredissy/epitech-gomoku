@@ -45,6 +45,7 @@ t_noeud		*MaxMove(t_noeud *gamepos, int depth, char player, int alpha, int beta,
 	    //displaymoves(gamepos->coup);
 
 	    curmove = MinMove(move, depth - 1, !player, alpha, beta, args);
+	    free(curmove);
 //	    printf("minmove ok\n");
 //	    displaymoves(curmove->coup);
 	    if(depth==MAXDEPTH && args.debug==FULL_DEBUG)

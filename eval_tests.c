@@ -78,8 +78,11 @@ int does_block_ennemy(char *chaine)
 {
 	char modele1[4]={MOI, ADVERSAIRE, ADVERSAIRE, ADVERSAIRE};
 	char modele2[5]={MOI, ADVERSAIRE, ADVERSAIRE, ADVERSAIRE, MOI};
+	char modele3[6]={MOI, ADVERSAIRE, ADVERSAIRE, ADVERSAIRE, ADVERSAIRE, MOI};
 	if(!strncmp((char*)&modele2, chaine, 5))
 		return(0);
+	if(!strncmp((char*)&modele3, chaine, 6))
+		return(2);
 	if(!strncmp((char*)&modele1, chaine, 4))
 		return(1);
 	return(0);

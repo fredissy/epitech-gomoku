@@ -10,15 +10,22 @@ int evalnode(t_noeud *gamestate, char player, t_args args)
     return (0);
   coup=gamestate->coup;
   while(coup)
-  {
+  {//Faire un test comme quoi on n'évalue pas si le joueur du coup n'est pas notre player
 	  coord.x=coup->x;
 	  coord.y=coup->y;
-	  score += evalcase_align(gamestate->coup, coord, player);
-	  if(blocks_ennemy(gamestate->coup, coord, player)||fills_hole(gamestate->coup, coord, player))
-		score+=10;
-	  if(get_maxalign_coord(coord, gamestate) == 5)
-		score+=20;
-	  gamestate->value=/*best*/score;
+	  if(coup->player ==player)
+	  {
+		  score += 3*evalcase_align(gamestate->coup, coord, player);
+		  if(fills_hole(gamestate->coup, coord, player))
+			score+=10;
+		  if(blocks_ennemy(gamestate->coup, coord, player)==1)
+			score+=10;
+		  if(blocks_ennemy(gamestate->coup, coord, player)==1)
+			score+=30;
+		  if(get_maxalign_coord(coord, gamestate) == 5)
+			score+=20;
+		  gamestate->value=/*best*/score;
+	  }
 	  coup = coup->next;
   }
 //  printf(" %d %d => %d\n", coord.x, coord.y, score);
