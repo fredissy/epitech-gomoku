@@ -25,26 +25,25 @@ int evalnode(t_noeud *gamestate, char player, t_args args)
       bestscore = MAX(score, bestscore);
       coup = coup->next;
     }
-
-
-/*   while(y<dim.maxleft+dim.width) */
-/*     { */
-/*       x=dim.maxleft; */
-/*       while(x<dim.maxtop+dim.height) */
-/* 	{ */
-/* 	  score=evalcase(tab, x, y, player); */
-/* 	  if(score>bestscore) */
-/* 	    bestscore=score; */
-/* 	  x++; */
-/* 	} */
-/*       y++; */
-/*     } */
+  
+  
+  /*   while(y<dim.maxleft+dim.width) */
+  /*     { */
+  /*       x=dim.maxleft; */
+  /*       while(x<dim.maxtop+dim.height) */
+  /* 	{ */
+  /* 	  score=evalcase(tab, x, y, player); */
+  /* 	  if(score>bestscore) */
+  /* 	    bestscore=score; */
+  /* 	  x++; */
+  /* 	} */
+  /*       y++; */
+  /*     } */
   if(args.debug==FULL_DEBUG)
     {
-      displaymoves(gamestate->coup);
-      printf("=>%d\n", bestscore);
+      //      displaymoves(gamestate->coup);
+      //      printf("=>%d(P%d)\n", bestscore, player+1);
     }
-  //  printf("%d\n", bestscore);
   gamestate->value=bestscore;
   free(tab);
   return(bestscore);
@@ -54,11 +53,9 @@ int evalnode(t_noeud *gamestate, char player, t_args args)
 //x et y coordonnees de la case a inspecter.
 int	evalcase(t_tab *tab, int x, int y, char player)
 {
-  //  int	bestscore=0;
   int	score=0;
   if((&tab->t[x][y])->player == NOPLAYER || (&tab->t[x][y])->player == NOPLAYER)
     return (0);
-
   if(x<=DIM-6 && x>=0)
     score = MAX(score, eval_line(tab, x, y, 1, 0, player));
   if(y<=DIM-6 && y>=0 && x<=DIM-6 && x>=0)
@@ -141,5 +138,5 @@ t_tab *generatetable(t_coup *first)
 }
 int gameended(t_noeud *gamestate)
 {
-  return(gamestate->value==5);
+  return(gamestate->value>=5);
 }

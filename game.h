@@ -14,7 +14,6 @@
 #define FREE 0
 #define DIM 19
 #define MAXDEPTH 3
-#define TOBEALIGNED 3
 #define EXTRA 2
 
 #define MAX(x,y) ((x)>(y)?(x):(y))

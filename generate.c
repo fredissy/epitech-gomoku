@@ -20,7 +20,7 @@ t_noeud	**GenerateMoves(t_noeud *gamepos, int depth)
       moves[current]=GenerateMove(gamepos, current, depth);
       //      printf("D:%d(%d/%d)   ", depth,current, nbcas);
       //      displaymoves(moves[current]->coup);
-      //            printf("---\n");
+      //      printf("---\n");
       current++;
     }
 
