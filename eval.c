@@ -9,19 +9,19 @@ int evalnode(t_noeud *gamestate, char player, t_args args)
   if(gamestate==0)
     return (0);
   coup=gamestate->coup;
-  printf("-> %d;%d\n", gamestate->x, gamestate->y);
-			coord.x=gamestate->x;
-			coord.y=gamestate->y;
-			score = evalcase_align(gamestate->coup, coord, player);
-      		if(score==0)
-      			return(0);
-      		bestscore = MAX(score, bestscore);
+  coord.x=gamestate->x;
+  coord.y=gamestate->y;
+  score = evalcase_align(gamestate->coup, coord, player);
+  bestscore = MAX(score, bestscore);
+  if(score==0)
+    return(0);
   if(blocks_ennemy(gamestate->coup, coord, player)||fills_hole(gamestate->coup, coord, player))
     score=10;
   bestscore = MAX(score, bestscore);
 
   if(get_maxalign_coord(coord, gamestate) == 5)
   	score=20;
+  bestscore = MAX(score, bestscore);
   gamestate->value=bestscore;
 
   return(bestscore);
@@ -30,56 +30,26 @@ int evalnode(t_noeud *gamestate, char player, t_args args)
 int	evalcase_align(t_coup *coups, t_coord coord, char player)
 {
   int	score=0;
-  int tmpscore=0;
+//  int tmpscore=0;
 
   if(occupee(coups, coord)== NOPLAYER)
     return (0);
   if(coord.x<=DIM-6 && coord.x>=0)
-  {
-	 tmpscore = eval_line(coups, coord, 1, 0, player);
-     score = MAX(score, tmpscore);
-  }
-
+  	 score=MAX(score,eval_line(coups, coord, 1, 0, player));
   if(coord.y<=DIM-6 && coord.y>=0 && coord.x<=DIM-6 && coord.x>=0)
-  {
-	 tmpscore = eval_line(coups, coord, 1, 1, player);
-     score = MAX(score, tmpscore);
-  }
-
+  	score=MAX(score,eval_line(coups, coord, 1, 1, player));
   if(coord.y<=DIM-6 && coord.y>=0)
-  {
-    tmpscore=eval_line(coups, coord, 0, 1, player);
-	score = MAX(score, tmpscore);
-  }
+  	score=MAX(score,eval_line(coups, coord, 0, 1, player));
   if(coord.y<=DIM-6 && coord.y>=0 && coord.x>=5 && coord.x<=DIM)
-  {
-    tmpscore=eval_line(coups, coord, -1, 1, player);
-	score = MAX(score, tmpscore);
-  }
-
+	score=MAX(score,eval_line(coups, coord, -1, 1, player));
   if(coord.x>=5 && coord.x<=DIM)
-  {
- 	tmpscore=eval_line(coups, coord, -1, 0, player);
-	score = MAX(score, tmpscore);
-  }
-
+    score=MAX(score,eval_line(coups, coord, -1, 0, player));
   if(coord.x>=5 && coord.x<=DIM && coord.y>=5 && coord.y<=DIM)
-  {
-    tmpscore=eval_line(coups, coord, -1, -1, player);
-	score = MAX(score, tmpscore);
-  }
-
+    score=MAX(score,eval_line(coups, coord, -1, -1, player));
   if(coord.y>=5 && coord.y<=DIM)
-  {
-	tmpscore=eval_line(coups, coord, 0, -1, player);
-	score = MAX(score, tmpscore);
-  }
-
+	score=MAX(score,eval_line(coups, coord, 0, -1, player));
   if(coord.x<=DIM-6 && coord.x>=0 && coord.y>=5 && coord.y<=DIM)
-  {
-	tmpscore=eval_line(coups, coord, 1, -1, player);
-	score = MAX(score, tmpscore);
-  }
+	score=MAX(score,eval_line(coups, coord, 1, -1, player));
   return(score);
 }
 
@@ -280,7 +250,7 @@ int get_maxalign_coord(t_coord coord, t_noeud *gamestate)
 		bestnbre=MAX(nbre, bestnbre);
 	}
 	i=0;
-	//printf("Pour (%d;%d), maxalign_coord=%d ", coord.x, coord.y, bestnbre);
+//	printf("Pour (%d;%d), maxalign_coord=%d\n", coord.x, coord.y, bestnbre);
 	while(i<8)
 		free(tabs[i++]);
     return(bestnbre);
