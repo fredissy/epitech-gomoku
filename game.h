@@ -113,3 +113,4 @@ int		dans(t_coup *orig, t_coord coord, signed char player);
 int		checkdoubletrois(t_coup *coups, t_coord saisie, signed char player);
 int		is_doubletrois(char *chaine, signed char player);
 t_coord	generatecoord(int x, int y);
+int	occupee2(t_coup *orig, t_coord coord);

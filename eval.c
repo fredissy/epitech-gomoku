@@ -17,18 +17,18 @@ int evalnode(t_noeud *gamestate, char player, t_args args)
 //  tab=generatetable(gamestate->coup);
   x=dim.maxleft;
   y=dim.maxtop;
-
   while(coup)
     {
 		if(coup->player==player)
 		{
-			score = evalcase(gamestate->coup, coup->x, coup->y, player);
+			score = evalcase(coup, coup->x, coup->y, player);
       		if(score==0)
       		return(0);
       		bestscore = MAX(score, bestscore);
 		}
 		coup = coup->next;
     }
+
 //  if(args.debug==FULL_DEBUG)
 //    {
 	//	displaymoves(gamestate->coup);
@@ -124,7 +124,8 @@ int	eval_line(t_coup *coups, t_coord coord, signed int xm, signed int ym, char p
   int	nbfree=0;
   char	player_2;
   int	score;
-
+t_coord backup;
+backup=coord;
   if(player==PLAYER1)
     player_2=PLAYER2;
   else
@@ -160,7 +161,7 @@ int	eval_line(t_coup *coups, t_coord coord, signed int xm, signed int ym, char p
 		i++;
     }
 //  if(nbfree+score>=5)
-  	printf("(%d;%d)=>%d\n",coord.x, coord.y, nbfree+score);
+//  	printf("(%d;%d) %d ",backup.x, backup.y, score);
   if(nbfree+score>=5)
 	return(score);
   else
