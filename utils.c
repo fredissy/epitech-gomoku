@@ -138,6 +138,36 @@ t_coup *copycoup(t_coup *src)
 	return(nouv);
 }
 
+void removecoup(t_noeud *parent, t_coord coord)
+{
+	t_coup *prev;
+	t_coup *cur;
+	t_coup *tmp;
+
+	prev=parent->coup;
+	if(prev->x==coord.x && prev->y==coord.y)
+	{
+		tmp = prev;
+		parent->coup = prev->next;
+		free(tmp);
+		return;
+	}
+	cur = prev->next;
+	while(cur)
+	{
+		if(cur->x==coord.x && cur->y==coord.y)
+		{
+			tmp = cur;
+			prev->next = cur->next;
+			free(tmp);
+			return;
+		}
+	}
+	printf("coup non trouve dans la liste!\n");
+}
+
+
+
 t_coup *duplicate(t_coup *src)
 {
 	t_coup *first;
@@ -209,16 +239,13 @@ int	occupee(t_coup *orig, t_coord coord)
     return (PLAYER1);
   while(orig)
     {
-      //      printf("[%d;%d](%d;%d)\n", orig->x, orig->y, coord.x, coord.y);
       if(orig->x == coord.x && orig->y == coord.y)
-	  {
-	  //	  printf("retour:%d\n",orig->player);
 	    return(orig->player);
-	  }
       orig=orig->next;
     }
   return (NOPLAYER);
 }
+
 //pareil que occupee'1', mais precise si dehors ou non
 int	occupee2(t_coup *orig, t_coord coord)
 {
