@@ -38,40 +38,48 @@ int evalnode(t_noeud *gamestate, char player, t_args args)
 int	evalcase_align(t_coup *coups, t_coord coord, char player)
 {
   int	score=0;
-
+  int 	tmp;
   if(occupee(coups, coord)== NOPLAYER)
     return (0);
   if(coord.x<=DIM-6 && coord.x>=0)
   {printf("\na");
-  	 score=MAX(score,eval_line(coups, coord, 1, 0, player));
+  tmp = eval_line(coups, coord, 1, 0, player);
+  	 score=MAX(score,tmp);
  }
   if(coord.y<=DIM-6 && coord.y>=0 && coord.x<=DIM-6 && coord.x>=0)
  {printf("\nb");
- score=MAX(score,eval_line(coups, coord, 1, 1, player));
+ tmp = eval_line(coups, coord, 1, 1, player);
+ score=MAX(score,tmp);
  }
  if(coord.y<=DIM-6 && coord.y>=0)
  {printf("\nc");
-	 score=MAX(score,eval_line(coups, coord, 0, 1, player));
+ tmp = eval_line(coups, coord, 0, 1, player);
+	 score=MAX(score,tmp);
   }
   if(coord.y<=DIM-6 && coord.y>=0 && coord.x>=5 && coord.x<=DIM)
 	{printf("\nd");
-		score=MAX(score,eval_line(coups, coord, -1, 1, player));
+		tmp = eval_line(coups, coord, -1, 1, player);
+		score=MAX(score,tmp);
   }
   if(coord.x>=5 && coord.x<=DIM)
   {printf("\ne");
-	  score=MAX(score,eval_line(coups, coord, -1, 0, player));
+  tmp = eval_line(coups, coord, -1, 0, player);
+	  score=MAX(score,tmp);
   }
   if(coord.x>=5 && coord.x<=DIM && coord.y>=5 && coord.y<=DIM)
   {printf("\nf");
-	  score=MAX(score,eval_line(coups, coord, -1, -1, player));
+  tmp = eval_line(coups, coord, -1, -1, player);
+	  score=MAX(score,tmp);
   }
   if(coord.y>=5 && coord.y<=DIM)
 	{printf("\ng");
-		score=MAX(score,eval_line(coups, coord, 0, -1, player));
+	tmp= eval_line(coups, coord, 0, -1, player);
+		score=MAX(score,tmp);
   }
   if(coord.x<=DIM-5 && coord.x>=0 && coord.y>=5 && coord.y<=DIM)
 	{printf("\nh");
-		score=MAX(score,eval_line(coups, coord, 1, -1, player));
+	tmp = eval_line(coups, coord, 1, -1, player);
+		score=MAX(score,tmp);
 
   }printf("=>%d;",score);
   return(score);
@@ -95,41 +103,32 @@ int	eval_line(t_coup *coups, t_coord coord, signed int xm, signed int ym, char p
 i=0;
     while((occupee2(coups, generatecoord(x,y)) == player) && i<5 )
     {
-		printf("!");
 		x+=xm;
 		y+=ym;
 		i++;
 	}
-	x+=xm;
-		y+=ym;
-
 	while(space+i<5 && (occupee2(coups, generatecoord(x,y)) == NOPLAYER))
 	{
-		printf("-");
 	    x+=xm;
 		y+=ym;
 		space++;
 	}
-    x = coord.x-xm;
-    y = coord.y-ym;
+    x = coord.x;
+    y = coord.y;
+	i--;
 	while(i<5 && (occupee2(coups, generatecoord(x,y))==player))
 	{
-		printf(":");
 		x-=xm;
 		y-=ym;
 		i++;
 	}
-	x+=xm;
-		y+=ym;
 
 	while(space+i<5 && (occupee2(coups, generatecoord(x,y)) == NOPLAYER))
 	{
-		printf("/");
-	    x+=xm;
-		y+=ym;
+	    x-=xm;
+		y-=ym;
 		space++;
 	}
-printf("{%d|%d}", i, space);
 if(space+i>=5)
 return(i);
 else
