@@ -2,7 +2,6 @@
 
 int evalnode(t_noeud *gamestate, char player, t_args args)
 {
-
   int	score=0;
   t_coup	*coup;
   t_coord coord;
@@ -20,11 +19,11 @@ int evalnode(t_noeud *gamestate, char player, t_args args)
 		  score+=10*(blocks_ennemy(gamestate->coup, coord, player));//on bloque une evolution vers un XXXX adverse, 10 points par blocage
 		  score+=15*(prise_paire_adversaire(gamestate->coup, coord, player));//on prend une paire a l'adversaire, 15 points par prise
 		  score-=10*(prise_paire_adversaire(gamestate->coup, coord, !player));//on se fait manger une paire, pas intéressant donc -15 points
-		  score+=100*(get_maxalign_coord(coord, gamestate) == 5);//on réussit à aligner 5 pions => victoire, +100 points
-		  gamestate->value=/*best*/score;
+		  score+=100*(get_maxalign_coord(coord, gamestate, player) == 5);//on réussit à aligner 5 pions => victoire, +100 points
 	  }
 	  coup = coup->next;
   }
+  gamestate->value=/*best*/score;
 //  printf(" %d %d => %d\n", coord.x, coord.y, score);
   return(score);
 }
@@ -110,21 +109,24 @@ int	eval_line(t_coup *coups, t_coord coord, signed int xm, signed int ym, char p
   	return (0);
 }
 
-int gameended(t_noeud *gamestate)
+//on renvoie 0 si aucun gagnant, 1 pour player1, et 2 pour player2
+int gameended(t_noeud *gamestate, char player)
 {
 	t_coup *coup;
 	int	nbalign=0;
 	coup = gamestate->coup;
 	while(coup)
 	{
-		nbalign=get_maxalign_coup(coup, gamestate);
+		nbalign=get_maxalign_coup(coup, gamestate, player);
 		if(nbalign==5)
-		  return (1);
+		  return (player+1);
 		coup = coup->next;
 	}
-	if(gamestate->paires[0] == NBPAIRES || gamestate->paires[1] == NBPAIRES)
+	if(gamestate->paires[0] == NBPAIRES)
 		return (1);
-	return(nbalign==5);
+	if(gamestate->paires[1] == NBPAIRES)
+		return (2);
+return(0);
 }
 
 int checkstring_for_victory(char *chaine)

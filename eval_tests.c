@@ -1,15 +1,15 @@
 #include "game.h"
 
-int get_maxalign_coup(t_coup *tocheck, t_noeud *gamestate)
+int get_maxalign_coup(t_coup *tocheck, t_noeud *gamestate, char player)
 {
 
 	t_coord coord;
 	coord.x=tocheck->x;
 	coord.y=tocheck->y;
-	return(get_maxalign_coord(coord, gamestate));
+	return(get_maxalign_coord(coord, gamestate, player));
 }
 
-int get_maxalign_coord(t_coord coord, t_noeud *gamestate)
+int get_maxalign_coord(t_coord coord, t_noeud *gamestate, char player)
 {
 	t_coup *coups;
 	char	*tabs[8];
@@ -17,14 +17,14 @@ int get_maxalign_coord(t_coord coord, t_noeud *gamestate)
 	int		bestnbre=0;
 	int		i=0;
 	coups = gamestate->coup;
-	tabs[0] = buildchaine(coups, 1, 0, coord, PLAYER1, 5, 0); //droite
-	tabs[1] = buildchaine(coups, 1, 1, coord, PLAYER1, 5, 0); //bas droite
-	tabs[2] = buildchaine(coups, 0, 1, coord, PLAYER1, 5, 0); //bas
-	tabs[3] = buildchaine(coups, -1, 1, coord, PLAYER1, 5, 0); //bas gauche
-	tabs[4] = buildchaine(coups, -1, 0, coord, PLAYER1, 5, 0); //gauche
-	tabs[5] = buildchaine(coups, -1, -1, coord, PLAYER1, 5, 0); //haut gauche
-	tabs[6] = buildchaine(coups, 0, -1, coord, PLAYER1, 5, 0); //haut
-	tabs[7] = buildchaine(coups, 1, -1, coord, PLAYER1, 5, 0); //haut droite
+	tabs[0] = buildchaine(coups, 1, 0, coord, player, 5, 0); //droite
+	tabs[1] = buildchaine(coups, 1, 1, coord, player, 5, 0); //bas droite
+	tabs[2] = buildchaine(coups, 0, 1, coord, player, 5, 0); //bas
+	tabs[3] = buildchaine(coups, -1, 1, coord, player, 5, 0); //bas gauche
+	tabs[4] = buildchaine(coups, -1, 0, coord, player, 5, 0); //gauche
+	tabs[5] = buildchaine(coups, -1, -1, coord, player, 5, 0); //haut gauche
+	tabs[6] = buildchaine(coups, 0, -1, coord, player, 5, 0); //haut
+	tabs[7] = buildchaine(coups, 1, -1, coord, player, 5, 0); //haut droite
 	tabs[8] = 0;
 
 	while(i<8)

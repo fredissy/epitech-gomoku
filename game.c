@@ -27,7 +27,7 @@ void		gameloop_1p(t_args args)
       toplay=saisie(PLAYER1, jeu->coup);
       ajoutecoup(jeu, toplay, PLAYER1);
       dealprises(jeu, toplay, PLAYER1);
-	  gagne=gameended(jeu);
+	  gagne=gameended(jeu, PLAYER1);
 	  if(!gagne)
 	  {
 		  toplay = MinMax(jeu, MAXDEPTH, PLAYER1, args);
@@ -39,9 +39,10 @@ void		gameloop_1p(t_args args)
 			displaymoves(jeu->coup);
 		  showgrid(jeu);
 		  infoprises(jeu);
-		  gagne=gameended(jeu);
+		  gagne=gameended(jeu, PLAYER2);
 		}
 	}
+	printf("Joueur %d a gagné!\n", gagne);
 }
 
 void	gameloop_2p(t_args args)
@@ -62,7 +63,7 @@ void	gameloop_2p(t_args args)
       dealprises(jeu, toplay, PLAYER1);
       showgrid(jeu);
       infoprises(jeu);
-      gagne = gameended(jeu);
+      gagne = gameended(jeu, PLAYER1);
       if(!gagne)
       {
 		  if(args.debug==FULL_DEBUG)
@@ -72,11 +73,12 @@ void	gameloop_2p(t_args args)
 		  dealprises(jeu, toplay, PLAYER2);
 		  showgrid(jeu);
 		  infoprises(jeu);
-		  gagne = gameended(jeu);
+		  gagne = gameended(jeu, PLAYER2);
 		  if(args.debug==FULL_DEBUG)
 			displaymoves(jeu->coup);
 		}
 	}
+	printf("Joueur %d a gagné!\n", gagne);
 }
 
 t_args arguments(int ac, char **av)
