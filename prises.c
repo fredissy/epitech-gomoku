@@ -70,11 +70,11 @@ void	dealprises(t_noeud *jeu, t_coord coord, char player)
 }
 /* Sens:
 **
-**  5 6 7
+** 5  6  7
 **   \|/
-**  4-+-0
+** 4 -+- 0
 **   /|\
-**  3 2 1
+** 3  2  1
 */
 void enlevepaire(t_noeud *jeu, t_coord coord, int sens, char player)
 {

@@ -15,8 +15,9 @@
 #define RUN_DEBUG 1
 #define FULL_DEBUG 2
 
-//mot clé pour l'aide
+//mots clés
 #define HINT_KEYWORD "hint"
+#define QUIT_KEYWORD "quit"
 
 //taille du damier
 #define DIM 15

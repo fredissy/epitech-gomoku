@@ -18,7 +18,7 @@ SRC 	= disp.c \
 	  saisie.c \
 	  hint.c \
 	  prises.c \
-	  coup_utils.c
+	  coups_utils.c \
 
 NAME 	= egomoku
 OBJ 	= $(SRC:.c=.o)

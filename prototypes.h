@@ -50,3 +50,4 @@ int do_prend_paire(char *chaine);
 void	dealprises(t_noeud *jeu, t_coord coord, char player);
 void enlevepaire(t_noeud *jeu, t_coord coord, int sens, char player);
 void infoprises(t_noeud *jeu);
+int deal_keywords(t_coup *coups, char player, char *buffer);

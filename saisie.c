@@ -12,12 +12,25 @@ t_coord	saisie(signed char player, t_coup *coups)
     {
       printf("joueur %d coords x;y? ", player+1);
       scanf("%s", (char*)&buffer);
-      if(!strcmp((char*)&buffer, "hint"))
-      	showhint(coups, player);
-      else
+      if(!deal_keywords(coups, player, (char*)&buffer));
         sscanf((char*)&buffer,"%u;%u", &saisie.x, &saisie.y);
     }
   return (saisie);
+}
+
+int deal_keywords(t_coup *coups, char player, char *buffer)
+{
+	if(!strcmp(buffer, HINT_KEYWORD))
+	{
+		showhint(coups, player);
+		return(0);
+	}
+	if(!strcmp(buffer, QUIT_KEYWORD))
+	{
+		printf("Bye bye\n");
+		exit(0);
+	}
+	return(1);
 }
 
 //valide la saisie du joueur
