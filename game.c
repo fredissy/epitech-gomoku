@@ -33,8 +33,8 @@ void		gameloop_1p(t_args args)
       dealprises(jeu, toplay, PLAYER2);
       if(args.debug==FULL_DEBUG)
 	    displaymoves(jeu->coup);
-	  infoprises(jeu);
 	  showgrid(jeu);
+	  infoprises(jeu);
 	  gagne=gameended(jeu);
     }
 }
@@ -55,16 +55,16 @@ void	gameloop_2p(t_args args)
       toplay=saisie(PLAYER1, jeu->coup);
       ajoutecoup(jeu, toplay, PLAYER1);
       dealprises(jeu, toplay, PLAYER1);
-      infoprises(jeu);
       showgrid(jeu);
+      infoprises(jeu);
       gagne = gameended(jeu);
       if(args.debug==FULL_DEBUG)
 	    displaymoves(jeu->coup);
       toplay = saisie(PLAYER2, jeu->coup);
       ajoutecoup(jeu, toplay, PLAYER2);
       dealprises(jeu, toplay, PLAYER2);
-	  infoprises(jeu);
 	  showgrid(jeu);
+      infoprises(jeu);
 	  gagne = gameended(jeu);
       if(args.debug==FULL_DEBUG)
 	    displaymoves(jeu->coup);

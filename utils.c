@@ -154,8 +154,6 @@ void removecoup(t_noeud *parent, t_coord coord)
 			prev->next = cur->next;
 			free(cur);
 			cur=prev;
-			displaymoves(parent->coup);
-//			return;
 		}
 		cur=cur->next;
 		prev = prev->next;

@@ -30,3 +30,6 @@ clean :
 
 fclean :
 	rm -f $(NAME)
+	
+save :
+	tar -cvzf ../gomoku-`date +%d%m-%Hh%M`.tgz Makefile *.c *.h

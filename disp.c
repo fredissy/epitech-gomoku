@@ -68,5 +68,5 @@ void showgrid(t_noeud *gamestate)
 
 void infoprises(t_noeud *jeu)
 {
-	printf("1>%d,2>%d\n", jeu->paires[0], jeu->paires[1]);
+	printf("paires perdues P1:%d, P2:%d\n", jeu->paires[0], jeu->paires[1]);
 }
